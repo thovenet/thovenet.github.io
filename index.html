@@ -379,29 +379,31 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(DATA<span class="sc">$</span>VarNum[DATA<span class="sc">$</span>VarDich <span class="sc">==</span> <span class="st">&quot;Modalité1&quot;</span>], <span class="at">main =</span> <span class="st">&quot;Modalité2&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(DATA<span class="sc">$</span>VarNum[DATA<span class="sc">$</span>VarDich <span class="sc">==</span> <span class="st">&quot;Modalité2&quot;</span>], <span class="at">main =</span> <span class="st">&quot;Modalité2&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p>Test de normalité : shapiro.test(DATA<span class="math inline">\(VarNum[DATA\)</span>VarDich == “Modalité1”]) shapiro.test(DATA<span class="math inline">\(VarNum[DATA\)</span>VarDich == “Modalité2”])</p>
+<p>Test de normalité :</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(DATA<span class="sc">$</span>VarNum[DATA<span class="sc">$</span>VarDich <span class="sc">==</span> <span class="st">&quot;Modalité1&quot;</span>])</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(DATA<span class="sc">$</span>VarNum[DATA<span class="sc">$</span>VarDich <span class="sc">==</span> <span class="st">&quot;Modalité2&quot;</span>])</span></code></pre></div>
 <p>Pour comparer les variances :</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(DATA<span class="sc">$</span>VarNum, DATA<span class="sc">$</span>VarDich, var)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(VarNum <span class="sc">~</span> VarDich, <span class="at">data =</span> DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tapply</span>(DATA<span class="sc">$</span>VarNum, DATA<span class="sc">$</span>VarDich, var)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(VarNum <span class="sc">~</span> VarDich, <span class="at">data =</span> DATA)</span></code></pre></div>
 <p><strong><em>test de wilcoxon/Mann-Whitney si ce n’est pas le cas (test non paramètrique sur les rangs)</em></strong></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(VarNum <span class="sc">~</span> VarDich, <span class="at">data =</span> DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(VarNum <span class="sc">~</span> VarDich, <span class="at">data =</span> DATA)</span></code></pre></div>
 </div>
 <div id="gt_summary-cest-une-révolution" class="section level3">
 <h3>gt_summary, c’est une <em>révolution</em></h3>
 <p>On peut croiser plusieurs variables numériques avec un facteurs à plusieurs niveaux, et demander une p-value permettant d’évaluer les écarts.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>DATA <span class="sc">%&gt;%</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_summary</span>(<span class="at">include =</span> <span class="fu">c</span>(<span class="st">&quot;VarNum1&quot;</span>, <span class="st">&quot;VarNum2&quot;</span>, ..., <span class="st">&quot;VarNumN&quot;</span>), <span class="at">by =</span> VarQuali) <span class="sc">%&gt;%</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_p</span>()</span></code></pre></div>
-<p>On peut même demander des stats particulières dans le tableau avec l’option statistic = … Par exemple, la syntaxe suivante demande les moyennes et écarts types pour les variables quanti (par defaut c’est médiane et quartiles)</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>DATA <span class="sc">%&gt;%</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_summary</span>(<span class="at">include =</span> <span class="fu">c</span>(<span class="st">&quot;VarNum1&quot;</span>, <span class="st">&quot;VarNum2&quot;</span>, ..., <span class="st">&quot;VarNumN&quot;</span>), <span class="at">by =</span> VarQuali,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">statistic =</span> <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">&quot;{mean} ({sd})&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_p</span>()</span></code></pre></div>
-<p>En ajoutant l’option missing = “no”, on masque l’info sur les réponses manquantes</p>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_summary</span>(<span class="at">include =</span> <span class="fu">c</span>(<span class="st">&quot;VarNum1&quot;</span>, <span class="st">&quot;VarNum2&quot;</span>, ..., <span class="st">&quot;VarNumN&quot;</span>), <span class="at">by =</span> VarQuali) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_p</span>()</span></code></pre></div>
+<p>On peut même demander des stats particulières dans le tableau avec l’option statistic = … Par exemple, la syntaxe suivante demande les moyennes et écarts types pour les variables quanti (par defaut c’est médiane et quartiles)</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>DATA <span class="sc">%&gt;%</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_summary</span>(<span class="at">include =</span> <span class="fu">c</span>(<span class="st">&quot;VarNum1&quot;</span>, <span class="st">&quot;VarNum2&quot;</span>, ..., <span class="st">&quot;VarNumN&quot;</span>), <span class="at">by =</span> VarQuali,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">statistic =</span> <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">&quot;{mean} ({sd})&quot;</span>, <span class="at">missing =</span> <span class="st">&quot;no&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">statistic =</span> <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">&quot;{mean} ({sd})&quot;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_p</span>()</span></code></pre></div>
+<p>En ajoutant l’option missing = “no”, on masque l’info sur les réponses manquantes</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>DATA <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_summary</span>(<span class="at">include =</span> <span class="fu">c</span>(<span class="st">&quot;VarNum1&quot;</span>, <span class="st">&quot;VarNum2&quot;</span>, ..., <span class="st">&quot;VarNumN&quot;</span>), <span class="at">by =</span> VarQuali,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">statistic =</span> <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">&quot;{mean} ({sd})&quot;</span>, <span class="at">missing =</span> <span class="st">&quot;no&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_p</span>()</span></code></pre></div>
 </div>
 </div>
 <div id="quanti-quanti" class="section level2">
@@ -418,42 +420,42 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <h1><strong>GRAPHIQUES ET REPRESENTATIONS VISUELLES</strong></h1>
 <div id="affichage-multiple-de-graphiques-pour-visualiser-les-données" class="section level2">
 <h2>Affichage multiple de graphiques pour visualiser les données</h2>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(DATA[, <span class="fu">c</span>(<span class="st">&quot;VAR1&quot;</span>, <span class="st">&quot;VAR2&quot;</span>, <span class="st">&quot;VAR3&quot;</span>, <span class="st">&quot;VAR4&quot;</span>, ..., <span class="st">&quot;VARn&quot;</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggpairs</span>(DATA[, <span class="fu">c</span>(<span class="st">&quot;VAR1&quot;</span>, <span class="st">&quot;VAR2&quot;</span>, <span class="st">&quot;VAR3&quot;</span>, <span class="st">&quot;VAR4&quot;</span>, ..., <span class="st">&quot;VARn&quot;</span>)])</span></code></pre></div>
 </div>
 <div id="générer-graph-avec-esquisse" class="section level2">
 <h2>Générer graph avec esquisse</h2>
 <p>Outils esquisse pour générer des graphiques de manière interactive</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>esquisse<span class="sc">:</span><span class="fu">esquisser</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>esquisse<span class="sc">:</span><span class="fu">esquisser</span>()</span></code></pre></div>
 <p>On se sert de cet outils pour générer le code permettant de faire le graph sous ggplot2. On peut ensuite modifier le code pour ajouter des options / enrichir le graph.</p>
 </div>
 <div id="options-supplémentaires-pour-de-jolis-graphiques" class="section level2">
 <h2>Options supplémentaires pour de jolis graphiques</h2>
 <p>Par exemple :</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggrepel)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(manu) <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">x =</span> tx_d2, <span class="at">y =</span> tx_d1, <span class="at">size =</span> N_cit, <span class="at">label =</span> <span class="fu">row.names</span>(manu)) <span class="sc">+</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">&quot;#0c4c8a&quot;</span>) <span class="sc">+</span> <span class="fu">geom_text_repel</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Tx de dech sans les syllabes&quot;</span>) <span class="sc">+</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Tx de dech g?n?ral&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">26</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">44</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">64</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">92</span>,</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggrepel)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(manu) <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">x =</span> tx_d2, <span class="at">y =</span> tx_d1, <span class="at">size =</span> N_cit, <span class="at">label =</span> <span class="fu">row.names</span>(manu)) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">&quot;#0c4c8a&quot;</span>) <span class="sc">+</span> <span class="fu">geom_text_repel</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">&quot;Tx de dech sans les syllabes&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ylab</span>(<span class="st">&quot;Tx de dech g?n?ral&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">26</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">44</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">64</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">92</span>,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p>Affiche les noms des individus, les répartis pour qu’ils ne se chevauchent pas, et fait apparaitre des ligne verticales sur les valeurs 26, 44, 64 et 92 des x.</p>
 </div>
 </div>
 <div id="analyse-geometrique-des-donnees" class="section level1">
 <h1><strong>ANALYSE GEOMETRIQUE DES DONNEES</strong></h1>
 <p>Possibilité d’utiliser factoshiny qui permet de calibrer l’analyse factorielle et d’extraire le code.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Factoshiny)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Factoshiny</span>(DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Factoshiny)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Factoshiny</span>(DATA)</span></code></pre></div>
 <div id="acm" class="section level2">
 <h2>ACM</h2>
 <div id="réduire-le-corpus-pour-navoir-que-les-variables-interessantes" class="section level3">
 <h3>Réduire le corpus pour n’avoir que les variables interessantes</h3>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>DAF <span class="ot">&lt;-</span> DATA[, <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>, <span class="st">&quot;Var2&quot;</span>, <span class="st">&quot;Var3&quot;</span>, ..., <span class="st">&quot;Varn&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>DAF <span class="ot">&lt;-</span> DATA[, <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>, <span class="st">&quot;Var2&quot;</span>, <span class="st">&quot;Var3&quot;</span>, ..., <span class="st">&quot;Varn&quot;</span>)]</span></code></pre></div>
 </div>
 <div id="construire-acm-avec-factominer" class="section level3">
 <h3>Construire ACM avec factominer</h3>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ACM <span class="ot">&lt;-</span> <span class="fu">MCA</span>(DATA, <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, ..., n), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ACM <span class="ot">&lt;-</span> <span class="fu">MCA</span>(DATA, <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, ..., n), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>(On précise les colonnes qui doivent être considérées comme illustrative, on peut faire de même pour les individus)</p>
 </div>
 </div>
@@ -461,12 +463,12 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <h2>ACP</h2>
 <div id="construire-acp-avec-factominer" class="section level3">
 <h3>Construire ACP avec factominer</h3>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ACP <span class="ot">&lt;-</span> <span class="fu">PCA</span>(DATA, <span class="at">quali.sup =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">6</span>), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ACP <span class="ot">&lt;-</span> <span class="fu">PCA</span>(DATA, <span class="at">quali.sup =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">6</span>), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="explorer-les-résultats-avec-explor" class="section level3">
 <h3>Explorer les résultats avec explor</h3>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(explor)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">explor</span>(ACM)</span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(explor)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">explor</span>(ACM)</span></code></pre></div>
 </div>
 </div>
 </div>
@@ -474,13 +476,13 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <h1><strong>MODELISATION / REGRESSION</strong></h1>
 <div id="regression-linéaire" class="section level2">
 <h2>Regression linéaire</h2>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forestmodel)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(A06X_SCsegm <span class="sc">~</span> Lectores_ManuON <span class="sc">+</span> Lectores_FichON <span class="sc">+</span> Lectores_WebON <span class="sc">+</span> Lectores_LogiON,</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> cp)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod, . <span class="sc">~</span> ., <span class="at">test =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(mod))</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="fu">forest_model</span>(mod)</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forestmodel)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(A06X_SCsegm <span class="sc">~</span> Lectores_ManuON <span class="sc">+</span> Lectores_FichON <span class="sc">+</span> Lectores_WebON <span class="sc">+</span> Lectores_LogiON,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> cp)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod, . <span class="sc">~</span> ., <span class="at">test =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(mod))</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="fu">forest_model</span>(mod)</span></code></pre></div>
 </div>
 <div id="regression-linéaire-multiple" class="section level2">
 <h2>Regression linéaire multiple</h2>
@@ -492,7 +494,7 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <div id="analyse-textuelle-et-lexicale" class="section level1">
 <h1><strong>ANALYSE TEXTUELLE ET LEXICALE</strong></h1>
 <p>Package R.temis</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
 </div>
 </div>
 
