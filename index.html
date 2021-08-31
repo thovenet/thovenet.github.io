@@ -194,6 +194,12 @@
     <div id="toc">
       <ul>
       <li><a href="#packages-utiles">PACKAGES UTILES</a></li>
+      <li><a href="#aide-mémoires"><strong>Aide-mémoires</strong></a>
+      <ul>
+      <li><a href="#utilisation-de-r-studio">utilisation de R-studio :</a></li>
+      <li><a href="#quelques-bases-de-langage">Quelques bases de langage:</a></li>
+      <li><a href="#utlisation-rmarkdown">Utlisation Rmarkdown :</a></li>
+      </ul></li>
       <li><a href="#importation-de-donnees"><strong>IMPORTATION DE DONNEES</strong></a>
       <ul>
       <li><a href="#import-de-fichier-.csv-formule-de-base">Import de fichier .csv formule de base</a></li>
@@ -267,8 +273,24 @@
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(esquisse)  <span class="co"># si l&#39;addins ne s&#39;active pas dans les menus, on peut utiliser la fonction esquisse::esquisser()</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">scipen =</span> <span class="dv">999</span>)  <span class="co"># Pour désactiver l&#39;écriture scientifique ( = 0 pour réactiver)</span></span></code></pre></div>
 </div>
+<div id="aide-mémoires" class="section level1">
+<h1><strong>Aide-mémoires</strong></h1>
+<div id="utilisation-de-r-studio" class="section level2">
+<h2>utilisation de R-studio :</h2>
+<p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/rstudio-ide_fr.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/rstudio-ide_fr.pdf</a></p>
+</div>
+<div id="quelques-bases-de-langage" class="section level2">
+<h2>Quelques bases de langage:</h2>
+<p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/base-r.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/base-r.pdf</a></p>
+</div>
+<div id="utlisation-rmarkdown" class="section level2">
+<h2>Utlisation Rmarkdown :</h2>
+<p><a href="https://github.com/rstudio/cheatsheets/raw/master/rmarkdown.pdf" class="uri">https://github.com/rstudio/cheatsheets/raw/master/rmarkdown.pdf</a></p>
+</div>
+</div>
 <div id="importation-de-donnees" class="section level1">
 <h1><strong>IMPORTATION DE DONNEES</strong></h1>
+<p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-import.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/data-import.pdf</a></p>
 <p>C’est pas mal d’indiquer un espace travail avant d’importer les données. Soit en créant un projet R (File &gt; New project …) Soit avec Files &gt; More &gt; Set As Workind Directory Soit avec :</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;chemin/du/dossier&quot;</span>)</span></code></pre></div>
 <div id="import-de-fichier-.csv-formule-de-base" class="section level2">
@@ -295,6 +317,7 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 </div>
 <div id="manipulation-des-donnees" class="section level1">
 <h1><strong>MANIPULATION DES DONNEES</strong></h1>
+<p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/data-wrangling_fr.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/data-wrangling_fr.pdf</a></p>
 <div id="ajout-de-labels---étiquettes-sur-les-variables" class="section level2">
 <h2>Ajout de labels - étiquettes sur les variables</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(labelled)</span>
@@ -562,6 +585,7 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 </div>
 <div id="graphiques-et-representations-visuelles" class="section level1">
 <h1><strong>GRAPHIQUES ET REPRESENTATIONS VISUELLES</strong></h1>
+<p><a href="https://github.com/rstudio/cheatsheets/raw/master/translations/french/data-visualization_fr.pdf" class="uri">https://github.com/rstudio/cheatsheets/raw/master/translations/french/data-visualization_fr.pdf</a></p>
 <div id="affichage-multiple-de-graphiques-pour-visualiser-les-données" class="section level2">
 <h2>Affichage multiple de graphiques pour visualiser les données</h2>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
@@ -705,6 +729,7 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <h1><strong>ANALYSE TEXTUELLE ET LEXICALE</strong></h1>
 <p>Package R.temis</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
+<p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf</a></p>
 </div>
 </div>
 
