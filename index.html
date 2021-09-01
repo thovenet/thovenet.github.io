@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2021-08-31" />
+        <meta name="date" content="2021-09-01" />
     
     <title>Boite à outils R</title>
 
@@ -246,6 +246,7 @@
       </ul></li>
       <li><a href="#modelisation-regression"><strong>MODELISATION / REGRESSION</strong></a>
       <ul>
+      <li><a href="#régression-linéaire-simple">Régression linéaire simple</a></li>
       <li><a href="#anova-sur-un-facteur">Anova sur un facteur</a></li>
       <li><a href="#regression-linéaire-multiple">Regression linéaire multiple</a></li>
       <li><a href="#regression-logistique">Regression logistique</a></li>
@@ -254,7 +255,7 @@
       </ul>
     </div>
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
-                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-08-31</p>
+                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-01</p>
           </div>
    </div>
      
@@ -607,7 +608,8 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">44</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
 <span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">64</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">92</span>,</span>
 <span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div>
-<p>Affiche les noms des individus, les répartis pour qu’ils ne se chevauchent pas, et fait apparaitre des ligne verticales sur les valeurs 26, 44, 64 et 92 des x.</p>
+<p>Affiche les noms des individus (avec label=row.names(manu)), les répartis pour qu’ils ne se chevauchent pas (avec geom_text_repel()), et fait apparaitre des ligne verticales sur les valeurs 26, 44, 64 et 92 des x (avec geom_vline(…)).</p>
+<p>Il y a enormément d’options que l’on peut ajouter. Par exemple : geom_hbar(yintercept = .., …) : dessine une ligne horizontale geom_point(position = “jitter”) : modifie légèrement les coordonnées des points point des déchevaucher.</p>
 </div>
 </div>
 <div id="analyse-geometrique-des-donnees" class="section level1">
@@ -642,84 +644,124 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 </div>
 <div id="modelisation-regression" class="section level1">
 <h1><strong>MODELISATION / REGRESSION</strong></h1>
+<p><a href="http://pbil.univ-lyon1.fr/members/fpicard/franckpicard_fichiers/pdf/siab5.pdf" class="uri">http://pbil.univ-lyon1.fr/members/fpicard/franckpicard_fichiers/pdf/siab5.pdf</a></p>
+<div id="régression-linéaire-simple" class="section level2">
+<h2>Régression linéaire simple</h2>
+<p><a href="https://delladata.fr/la-regression-lineaire-simple-avec-le-logiciel-r/" class="uri">https://delladata.fr/la-regression-lineaire-simple-avec-le-logiciel-r/</a></p>
+<p>###Visualiser le lien entre les variables :</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">scatterplot</span>(VarNum1 <span class="sc">~</span> VarNum2, <span class="at">data =</span> DATA)</span></code></pre></div>
+<p>Affiche le nuage de point, les boxplots des deux distribution, la droite de régression linéaire par la methode des MCO (en ligne continue) et la courbe de regression locale de type lowess (en pointillés ) et son interval de confiance.</p>
+<blockquote>
+<p>Bonus sur la regression de Lowess : <a href="http://perso.ens-lyon.fr/lise.vaudor/regression-loess/" class="uri">http://perso.ens-lyon.fr/lise.vaudor/regression-loess/</a></p>
+</blockquote>
+<p>###Construire la regression :</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(VarNum1 <span class="sc">~</span> VarNum2, <span class="at">data =</span> DATA)</span></code></pre></div>
+<p>###Evaluer la validité des hypothèses On vérifie que les résidus sont indépendants ; distribués suivant une loi normale ; avec une variance constante.</p>
+<p>Indépendance</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">residuals</span>(reg), <span class="at">main =</span> <span class="st">&quot;reg&quot;</span>)</span></code></pre></div>
+<p>Normalité</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(reg, <span class="dv">2</span>)</span></code></pre></div>
+<p>Homogénéité</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(reg, <span class="dv">3</span>)</span></code></pre></div>
+<div id="visualiser-les-résultats" class="section level3">
+<h3>Visualiser les résultats</h3>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(reg)</span></code></pre></div>
+<p>La partie <code>Residuals</code> des résultats permet d’évaluer rapidement la normalité des résidus. Lorsque les résidus sont distribués selon une loi Normale, la médiane doit être autour de 0, et les valeurs absolues de Q1 et Q3 doivent être proches.</p>
+<p>La première ligne de la partie coefficients concerne l’ordonnée à l’origine, la seconde ligne concerne la pente.</p>
+<p>la première colonne rapporte l’estimation des coefficients des paramètres, la seconde colonne l’estimation de leur erreur standard, la troisième colonne est la statistique T la dernière colonne rapporte la p-value du test évaluant l’égalité à 0 des coefficients. Si la p-value est inférieure au seuil de significativité généralement utilisé de 0.05, alors on concluera que le paramètre est significativement différent de 0.</p>
+<p>En général, seul le coefficient de la pente a vraiment un intérêt. Cela signifie que lorsque la VarNum1 augmente d’une unité, alors, la VarnNum2 augmente de x unités (x étant la valeur de la pente).</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confInt</span>(reg)</span></code></pre></div>
+<p>Affiche l’interval de confiance à 95% de la pente.</p>
+</div>
+<div id="faire-des-prédications-avec-le-modele" class="section level3">
+<h3>Faire des prédications avec le modele</h3>
+<p>On commence par construire un nouveau data.frame avec une variable portant le même nom que la VarNum1 (ou 2) et les valeurs souhaitées.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">VarNum1 =</span> <span class="fu">c</span>(Val1, Val2, ..., Valn))</span></code></pre></div>
+<p>Ce data.frame sert d’argument “newdata” de la fonction “predict”</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(reg, <span class="at">newdata =</span> my_df)</span></code></pre></div>
+<p>On peut demander l’interval de confiances à 95% (la plage de valeurs ayant une probabilité de 0.95 de contenir la vraie valeur, pour le niveau utilisé)</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(reg, <span class="at">newdata =</span> my_df, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>)</span></code></pre></div>
+</div>
+</div>
 <div id="anova-sur-un-facteur" class="section level2">
 <h2>Anova sur un facteur</h2>
 <p><a href="https://delladata.fr/anova-a-un-facteur-partie-1/" class="uri">https://delladata.fr/anova-a-un-facteur-partie-1/</a></p>
 <div id="construction-du-modèle" class="section level3">
 <h3>Construction du modèle :</h3>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
 <p>ou</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
 </div>
 <div id="visualisation-des-résultats" class="section level3">
 <h3>Visualisation des résultats :</h3>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(MODEL)</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(MODEL)</span></code></pre></div>
 <p>ou (si on a construit le modele avec ‘aov’)</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(MODEL)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(MODEL)</span></code></pre></div>
 </div>
 <div id="vérification-des-hypothèses" class="section level3">
 <h3>Vérification des hypothèses</h3>
 <div id="indépendance-des-résidus" class="section level4">
 <h4>Indépendance des résidus :</h4>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(MODEL)</span></code></pre></div>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(MODEL)</span></code></pre></div>
 </div>
 <div id="normalité-des-individus" class="section level4">
 <h4>Normalité des individus :</h4>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(MODEL))</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(MODEL))</span></code></pre></div>
 </div>
 <div id="homogénéité-des-variances" class="section level4">
 <h4>Homogénéité des variances :</h4>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(<span class="fu">residuals</span>(MODEL) <span class="sc">~</span> DATA<span class="sc">$</span>VarCat)</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(<span class="fu">residuals</span>(MODEL) <span class="sc">~</span> DATA<span class="sc">$</span>VarCat)</span></code></pre></div>
 </div>
 <div id="graphiques-de-base-pour-illustrer-tout-ça" class="section level4">
 <h4>4 Graphiques de base pour illustrer tout ça :</h4>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
 </div>
 </div>
 <div id="comparaison-des-moyennes-pour-voir-les-variations" class="section level3">
 <h3>Comparaison des moyennes pour voir les variations</h3>
 <div id="comparaison-à-un-cas-témoin-qui-est-la-référence-du-modele" class="section level4">
 <h4>Comparaison à un “cas témoin” (qui est la référence du modele)</h4>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>compDunnett <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Dunnett&quot;</span>))</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compDunnett)</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compDunnett)</span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>compDunnett <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Dunnett&quot;</span>))</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compDunnett)</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compDunnett)</span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
 </div>
 <div id="comparaison-de-toutes-les-modalités-ensemble" class="section level4">
 <h4>Comparaison de toutes les modalités ensemble</h4>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>compTukey <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compTukey)</span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compTukey)</span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>compTukey <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compTukey)</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compTukey)</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
 <p>A partir de ces comparaisons, on peut générer des groupes de modalités en attribuant un système de lettre aux modalités. Si 2 modalités partagent une même lettre, il n’y a pas d’écart significatif entre elles.</p>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>tuk.cld <span class="ot">&lt;-</span> <span class="fu">cld</span>(compTukey)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>tuk.cld</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>tuk.cld <span class="ot">&lt;-</span> <span class="fu">cld</span>(compTukey)</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>tuk.cld</span></code></pre></div>
 <p>Ce système de lettre peut ensuite être indexé et être réutilisé dans un graphique par exemple.</p>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>letters <span class="ot">&lt;-</span> tuk.cld<span class="sc">$</span>mcletters<span class="sc">$</span>Letters</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>myletters_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">VarCat =</span> <span class="fu">levels</span>(Data<span class="sc">$</span>VarCat), <span class="at">letters =</span> letters)</span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>myletters_df</span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(DATA, <span class="fu">aes</span>(<span class="at">x =</span> VarCat, <span class="at">y =</span> VarNum, <span class="at">colour =</span> VarCat, <span class="at">fill =</span> VarCat)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="dv">0</span>,</span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
-<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="at">data =</span> myletters_df,</span>
-<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> letters, <span class="at">y =</span> <span class="dv">30</span>), <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>letters <span class="ot">&lt;-</span> tuk.cld<span class="sc">$</span>mcletters<span class="sc">$</span>Letters</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>myletters_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">VarCat =</span> <span class="fu">levels</span>(Data<span class="sc">$</span>VarCat), <span class="at">letters =</span> letters)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>myletters_df</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(DATA, <span class="fu">aes</span>(<span class="at">x =</span> VarCat, <span class="at">y =</span> VarNum, <span class="at">colour =</span> VarCat, <span class="at">fill =</span> VarCat)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="dv">0</span>,</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="at">data =</span> myletters_df,</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> letters, <span class="at">y =</span> <span class="dv">30</span>), <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="regression-linéaire-multiple" class="section level2">
 <h2>Regression linéaire multiple</h2>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forestmodel)</span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(A06X_SCsegm <span class="sc">~</span> Lectores_ManuON <span class="sc">+</span> Lectores_FichON <span class="sc">+</span> Lectores_WebON <span class="sc">+</span> Lectores_LogiON,</span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> cp)</span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
-<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod, . <span class="sc">~</span> ., <span class="at">test =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(mod))</span>
-<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a><span class="fu">forest_model</span>(mod)</span></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forestmodel)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(A06X_SCsegm <span class="sc">~</span> Lectores_ManuON <span class="sc">+</span> Lectores_FichON <span class="sc">+</span> Lectores_WebON <span class="sc">+</span> Lectores_LogiON,</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> cp)</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod, . <span class="sc">~</span> ., <span class="at">test =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(mod))</span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="fu">forest_model</span>(mod)</span></code></pre></div>
 </div>
 <div id="regression-logistique" class="section level2">
 <h2>Regression logistique</h2>
@@ -728,7 +770,7 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <div id="analyse-textuelle-et-lexicale" class="section level1">
 <h1><strong>ANALYSE TEXTUELLE ET LEXICALE</strong></h1>
 <p>Package R.temis</p>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
 <p><a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf</a></p>
 </div>
 </div>
