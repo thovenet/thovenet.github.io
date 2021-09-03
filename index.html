@@ -834,172 +834,197 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 </div>
 <div id="repèrer-des-coocurences-en-faisant-un-réseau-de-mots" class="section level3">
 <h3>Repèrer des coocurences en faisant un réseau de mots</h3>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">terms_graph</span>(dtmt, <span class="at">vertex.label.cex =</span> <span class="fl">0.5</span>, <span class="at">interactive =</span> F)</span></code></pre></div>
+</div>
+<div id="sortir-les-co-occurence-de-termes-choisi" class="section level3">
+<h3>Sortir les co-occurence de termes choisi</h3>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cooc_terms</span>(dtmt, <span class="st">&quot;moi&quot;</span>, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+</div>
+<div id="analyse-des-correspondances-sur-le-tableau-lexical-entier" class="section level3">
+<h3>Analyse des correspondances sur le Tableau Lexical Entier</h3>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>resTLE <span class="ot">&lt;-</span> <span class="fu">corpus_ca</span>(corpust, dtmt, <span class="at">sparsity =</span> <span class="fl">0.985</span>)</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> explor<span class="sc">::</span><span class="fu">prepare_results</span>(resTLE)</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>explor<span class="sc">::</span><span class="fu">CA_var_plot</span>(res, <span class="at">xax =</span> <span class="dv">1</span>, <span class="at">yax =</span> <span class="dv">2</span>, <span class="at">lev_sup =</span> <span class="cn">FALSE</span>, <span class="at">var_sup =</span> <span class="cn">FALSE</span>, <span class="at">var_sup_choice =</span> ,</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_hide =</span> <span class="st">&quot;Row&quot;</span>, <span class="at">var_lab_min_contrib =</span> <span class="dv">1</span>, <span class="at">col_var =</span> <span class="st">&quot;Position&quot;</span>, <span class="at">symbol_var =</span> <span class="st">&quot;Type&quot;</span>,</span>
+<span id="cb100-5"><a href="#cb100-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size_var =</span> <span class="cn">NULL</span>, <span class="at">size_range =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">300</span>), <span class="at">labels_size =</span> <span class="dv">10</span>, <span class="at">point_size =</span> <span class="dv">10</span>,</span>
+<span id="cb100-6"><a href="#cb100-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">transitions =</span> <span class="cn">TRUE</span>, <span class="at">labels_positions =</span> <span class="cn">NULL</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">5.48</span>, <span class="fl">4.84</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">3.79</span>,</span>
+<span id="cb100-7"><a href="#cb100-7" aria-hidden="true" tabindex="-1"></a>        <span class="fl">6.52</span>))</span></code></pre></div>
 </div>
 <div id="analyse-des-correspondances-sur-tableau-lexical-agrégé" class="section level3">
 <h3>Analyse des correspondances sur tableau lexical agrégé</h3>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>resTLA <span class="ot">&lt;-</span> <span class="fu">corpus_ca</span>(corpust, dtmt, <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">&quot;age&quot;</span>), <span class="at">sparsity =</span> <span class="fl">0.98</span>)</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> explor<span class="sc">::</span><span class="fu">prepare_results</span>(resTLA)</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>explor<span class="sc">::</span><span class="fu">CA_var_plot</span>(res, <span class="at">xax =</span> <span class="dv">1</span>, <span class="at">yax =</span> <span class="dv">2</span>, <span class="at">lev_sup =</span> <span class="cn">FALSE</span>, <span class="at">var_sup =</span> <span class="cn">FALSE</span>, <span class="at">var_sup_choice =</span> ,</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_hide =</span> <span class="st">&quot;None&quot;</span>, <span class="at">var_lab_min_contrib =</span> <span class="dv">1</span>, <span class="at">col_var =</span> <span class="st">&quot;Position&quot;</span>, <span class="at">symbol_var =</span> <span class="st">&quot;Type&quot;</span>,</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">size_var =</span> <span class="cn">NULL</span>, <span class="at">size_range =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">300</span>), <span class="at">labels_size =</span> <span class="dv">10</span>, <span class="at">point_size =</span> <span class="dv">11</span>,</span>
+<span id="cb101-6"><a href="#cb101-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">transitions =</span> <span class="cn">TRUE</span>, <span class="at">labels_positions =</span> <span class="cn">NULL</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.08</span>, <span class="fl">1.51</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.18</span>,</span>
+<span id="cb101-7"><a href="#cb101-7" aria-hidden="true" tabindex="-1"></a>        <span class="fl">1.4</span>))</span></code></pre></div>
 </div>
-<div id="calssification-avec-la-methode-reinert" class="section level3">
-<h3>Calssification avec la methode Reinert</h3>
+<div id="classification-avec-la-methode-reinert" class="section level3">
+<h3>Classification avec la methode Reinert</h3>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="ot">&lt;-</span> quanteda<span class="sc">::</span><span class="fu">as.dfm</span>(dtmt)</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>resrai <span class="ot">&lt;-</span> <span class="fu">rainette</span>(dfm, <span class="at">min_uc_size =</span> <span class="dv">3</span>, <span class="at">k =</span> <span class="dv">6</span>)</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rainette_plot</span>(resrai, dfm)</span></code></pre></div>
 </div>
 </div>
 <div id="avec-quanteda" class="section level2">
 <h2>Avec quanteda</h2>
 <p><a href="https://tutorials.quanteda.io/introduction/" class="uri">https://tutorials.quanteda.io/introduction/</a> <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf</a></p>
 <p><span class="smallcaps"><strong>WARNING : NE PAS CHARGER <em>R.temis</em> <u>ET</u> <em>quanteda</em> EN MEME TEMPS : IL RISQUE D’Y AVOIR CONFLIT SUR LA FONCTION <em>tm</em>. POUR UTILISER LES FONCTION DE L’UN DES PACKAGES ALORS QUE L’AUTRE EST CHARGE, ON UTILISE LES <em>::</em> (PAR EXEMPLE, <em>quanteda :: fonction</em>)</strong></span></p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">110</span>)</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textstats)</span>
-<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textmodels)</span>
-<span id="cb98-5"><a href="#cb98-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span>
-<span id="cb98-6"><a href="#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.corpora)</span>
-<span id="cb98-7"><a href="#cb98-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(text2vec)</span>
-<span id="cb98-8"><a href="#cb98-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readtext)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">110</span>)</span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textstats)</span>
+<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textmodels)</span>
+<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span>
+<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.corpora)</span>
+<span id="cb103-7"><a href="#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(text2vec)</span>
+<span id="cb103-8"><a href="#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readtext)</span></code></pre></div>
 <div id="import-des-données" class="section level3">
 <h3>Import des données</h3>
 <p>import le tableau qui contient les textex en première colonne</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a>loutq <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;lout.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a>loutq <span class="ot">&lt;-</span> <span class="fu">read.csv2</span>(<span class="st">&quot;lout.csv&quot;</span>)</span></code></pre></div>
 <p>Affiche les noms des colonnes pour controler que tout s’est bien passé</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(loutq)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(loutq)</span></code></pre></div>
 </div>
 <div id="préparation-du-corpus" class="section level3">
 <h3>Préparation du corpus</h3>
 <p>Construit le corpus à proprement parler : à partir de la base loutq et en précisant la colonne qui contient les textes. Les autres colonnes seront considérées comme des variables en plus, des infos supplémentaires sur les textes (les documents du corpus)</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>qorpus <span class="ot">&lt;-</span> <span class="fu">corpus</span>(loutq, <span class="at">text_field =</span> <span class="st">&quot;phrases&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>qorpus <span class="ot">&lt;-</span> <span class="fu">corpus</span>(loutq, <span class="at">text_field =</span> <span class="st">&quot;phrases&quot;</span>)</span></code></pre></div>
 <p>Affiche les 10 premiers documents et le nombre de tokens (jeton ~ mots ?), types (jetons uniques), sentences (phrases)</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(qorpus, <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(qorpus, <span class="dv">10</span>)</span></code></pre></div>
 <p>Permet de nommer les documents en fonction des variables catégorielles. Ca peut être pas mal pour s’y retrouver une fois qu’il y aura la colonne age + enfant (et donc avoir de Lou 2ans ; Lou 3ans ; Ugo 2ans ; etc.)</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>docid <span class="ot">&lt;-</span> <span class="fu">paste</span>(loutq<span class="sc">$</span>age</span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>               <span class="co">#,data$Var2,</span></span>
-<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a>               <span class="co">#data$Var3, </span></span>
-<span id="cb103-4"><a href="#cb103-4" aria-hidden="true" tabindex="-1"></a>               <span class="co">#sep = &quot; &quot;</span></span>
-<span id="cb103-5"><a href="#cb103-5" aria-hidden="true" tabindex="-1"></a>               ) </span>
-<span id="cb103-6"><a href="#cb103-6" aria-hidden="true" tabindex="-1"></a><span class="fu">docnames</span>(qorpus) <span class="ot">&lt;-</span> docid</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>docid <span class="ot">&lt;-</span> <span class="fu">paste</span>(loutq<span class="sc">$</span>age</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>               <span class="co">#,data$Var2,</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>               <span class="co">#data$Var3, </span></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>               <span class="co">#sep = &quot; &quot;</span></span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>               ) </span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a><span class="fu">docnames</span>(qorpus) <span class="ot">&lt;-</span> docid</span></code></pre></div>
 <p>affiche les variables supplémentaires sur les documents qui sont disponibles dans la base de données</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">docvars</span>(qorpus))</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">docvars</span>(qorpus))</span></code></pre></div>
 <p>Affiche le nombre de documents dans le corpus</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(qorpus)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(qorpus)</span></code></pre></div>
 <p>Décompose le corpus en sous ensemble sur la base de critères (ici l’âge) et affiche le nombre de documents dans le corpus (pour contrôler que le subset s’est bien passé)</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>q2ans <span class="ot">&lt;-</span> <span class="fu">corpus_subset</span>(qorpus, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;2&quot;</span>))</span>
-<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(q2ans)</span>
-<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a>q3ans <span class="ot">&lt;-</span> <span class="fu">corpus_subset</span>(qorpus, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;3&quot;</span>))</span>
-<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(q3ans)</span>
-<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>q5ans <span class="ot">&lt;-</span> <span class="fu">corpus_subset</span>(qorpus, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;5&quot;</span>))</span>
-<span id="cb106-6"><a href="#cb106-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(q5ans)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>q2ans <span class="ot">&lt;-</span> <span class="fu">corpus_subset</span>(qorpus, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;2&quot;</span>))</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(q2ans)</span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a>q3ans <span class="ot">&lt;-</span> <span class="fu">corpus_subset</span>(qorpus, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;3&quot;</span>))</span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(q3ans)</span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a>q5ans <span class="ot">&lt;-</span> <span class="fu">corpus_subset</span>(qorpus, age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;5&quot;</span>))</span>
+<span id="cb111-6"><a href="#cb111-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(q5ans)</span></code></pre></div>
 <p>Découpe les documents en phrases. La phrase devient la nouvelle unité de base</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>qtotph <span class="ot">&lt;-</span> <span class="fu">corpus_reshape</span>(qorpus, <span class="at">to =</span> <span class="st">&quot;sentences&quot;</span>)</span>
-<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(qtotph)</span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>qtotph <span class="ot">&lt;-</span> <span class="fu">corpus_reshape</span>(qorpus, <span class="at">to =</span> <span class="st">&quot;sentences&quot;</span>)</span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ndoc</span>(qtotph)</span></code></pre></div>
 </div>
 <div id="jouer-avec-les-tokens" class="section level3">
 <h3>Jouer avec les tokens</h3>
 <p>Découpe les documents en unités ‘tokens’ :</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a>tok_qorpus <span class="ot">&lt;-</span> <span class="fu">tokens</span>(qorpus)</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>tok_qorpus <span class="ot">&lt;-</span> <span class="fu">tokens</span>(qorpus)</span></code></pre></div>
 <p>Sans la ponctuation, pour plus de clareté :</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>tok_q_np <span class="ot">&lt;-</span> <span class="fu">tokens</span>(qorpus, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>tok_q_np <span class="ot">&lt;-</span> <span class="fu">tokens</span>(qorpus, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Permet de voir le ou les mots-clés voulus en contexte (ici 7 mots max avant et aprés) :</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>kw_jenon <span class="ot">&lt;-</span> <span class="fu">kwic</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;je&quot;</span>, <span class="st">&quot;non&quot;</span>), <span class="at">window =</span> <span class="dv">7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>kw_jenon <span class="ot">&lt;-</span> <span class="fu">kwic</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;je&quot;</span>, <span class="st">&quot;non&quot;</span>), <span class="at">window =</span> <span class="dv">7</span>)</span></code></pre></div>
 <p>Affiche le nombre voulu des premières citations :</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kw_je, <span class="dv">1000</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kw_je, <span class="dv">1000</span>)</span></code></pre></div>
 <p>Permet de trouver une suite de mot et affiche le résultat dans un tableau, ça peut être plus facile à lire</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>kw_moije <span class="ot">&lt;-</span> <span class="fu">kwic</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">phrase</span>(<span class="st">&quot;moi j*&quot;</span>))</span>
-<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(kw_moije)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>kw_moije <span class="ot">&lt;-</span> <span class="fu">kwic</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">phrase</span>(<span class="st">&quot;moi j*&quot;</span>))</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(kw_moije)</span></code></pre></div>
 <p>Selection et suppression des tokens qui renvoient à des mots grammaticaux</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>tok_q_np_ns <span class="ot">&lt;-</span> <span class="fu">tokens_select</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">&quot;fr&quot;</span>), <span class="at">selection =</span> <span class="st">&quot;remove&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>tok_q_np_ns <span class="ot">&lt;-</span> <span class="fu">tokens_select</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">&quot;fr&quot;</span>), <span class="at">selection =</span> <span class="st">&quot;remove&quot;</span>)</span></code></pre></div>
 <p>ou (les deux fonctions donnent le même résultat)</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a>tok_q_np_ns <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">&quot;fr&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>tok_q_np_ns <span class="ot">&lt;-</span> <span class="fu">tokens_remove</span>(tok_q_np, <span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">&quot;fr&quot;</span>))</span></code></pre></div>
 <p>Apparement il est possible de construires des tokens composés, mais là j’ai pas réussi. Point à revoir si la question se pose</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>toks_q_np_ns_comp <span class="ot">&lt;-</span> <span class="fu">tokens_compound</span>(tok_q_np_ns, <span class="at">pattern =</span> <span class="fu">phrase</span>(<span class="fu">c</span>(<span class="st">&quot;moi j*&quot;</span>)))</span>
-<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>kw_comp <span class="ot">&lt;-</span> <span class="fu">kwic</span>(toks_q_np_ns_comp, <span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;moi_j*&quot;</span>))</span>
-<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kw_comp, <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>toks_q_np_ns_comp <span class="ot">&lt;-</span> <span class="fu">tokens_compound</span>(tok_q_np_ns, <span class="at">pattern =</span> <span class="fu">phrase</span>(<span class="fu">c</span>(<span class="st">&quot;moi j*&quot;</span>)))</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>kw_comp <span class="ot">&lt;-</span> <span class="fu">kwic</span>(toks_q_np_ns_comp, <span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">&quot;moi_j*&quot;</span>))</span>
+<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(kw_comp, <span class="dv">10</span>)</span></code></pre></div>
 </div>
 <div id="matrice-de-caract-des-documents-dfm" class="section level3">
 <h3>Matrice de caract des documents (dfm)</h3>
 <p>Construction de la matrice à partir des jetons</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(tok_q_np_ns)</span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(tok_q_np_ns)</span></code></pre></div>
 <p>Comme c’est une matrice, on calculer les sommes de lignes et de colonnes</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rowSums</span>(dfm), <span class="dv">10</span>)</span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colSums</span>(dfm), <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">rowSums</span>(dfm), <span class="dv">10</span>)</span>
+<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">colSums</span>(dfm), <span class="dv">10</span>)</span></code></pre></div>
 <p>Sort les 10 mots les plus utilisés</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topfeatures</span>(dfm, <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topfeatures</span>(dfm, <span class="dv">10</span>)</span></code></pre></div>
 <p>Permet de retirer un mot (une colonne du DFM)</p>
-<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(dfm, <span class="at">pattern =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="ot">&lt;-</span> <span class="fu">dfm_remove</span>(dfm, <span class="at">pattern =</span> <span class="st">&quot;&quot;</span>)</span></code></pre></div>
 <p>Ne grade que les mots qui ont une freq sup à 10%</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>dfm2 <span class="ot">&lt;-</span> <span class="fu">dfm_trim</span>(dfm, <span class="at">min_termfreq =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>dfm2 <span class="ot">&lt;-</span> <span class="fu">dfm_trim</span>(dfm, <span class="at">min_termfreq =</span> <span class="dv">10</span>)</span></code></pre></div>
 <p>Résume DFM aux modalité d’une variable catégorielle (equivalent du tableau lexical agrégé)</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>dfmage <span class="ot">&lt;-</span> <span class="fu">dfm_group</span>(dfm, <span class="at">groups =</span> age)</span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>dfmage <span class="ot">&lt;-</span> <span class="fu">dfm_group</span>(dfm, <span class="at">groups =</span> age)</span></code></pre></div>
 </div>
 <div id="matrice-de-co-occurence" class="section level3">
 <h3>Matrice de co-occurence</h3>
 <p>Construit la matrice des co-occurences</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>fcm <span class="ot">&lt;-</span> <span class="fu">fcm</span>(dfm)</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>fcm <span class="ot">&lt;-</span> <span class="fu">fcm</span>(dfm)</span></code></pre></div>
 <p>Affiche les dimensions de la matrice</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(fcm)</span></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(fcm)</span></code></pre></div>
 <p>Affiches les mots qui sont les plus souvent corrélés à d’autres mots</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topfeatures</span>(fcm)</span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="fu">topfeatures</span>(fcm)</span></code></pre></div>
 <p>liste les 50 mots qui croisent le plus</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>feat <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">topfeatures</span>(fcm, <span class="dv">50</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>feat <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">topfeatures</span>(fcm, <span class="dv">50</span>))</span></code></pre></div>
 <p>reduit le tableau aux 50 mots qui croisent le plus</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>fcmred <span class="ot">&lt;-</span> <span class="fu">fcm_select</span>(fcm, <span class="at">pattern =</span> feat, <span class="at">selection =</span> <span class="st">&quot;keep&quot;</span>)</span>
-<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(fcmred)</span></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>fcmred <span class="ot">&lt;-</span> <span class="fu">fcm_select</span>(fcm, <span class="at">pattern =</span> feat, <span class="at">selection =</span> <span class="st">&quot;keep&quot;</span>)</span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(fcmred)</span></code></pre></div>
 <p>Génére un joli réseau de mots :</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>size <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="fu">colSums</span>(<span class="fu">dfm_select</span>(dfm, feat, <span class="at">selection =</span> <span class="st">&quot;keep&quot;</span>)))</span>
-<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">144</span>)</span>
-<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_network</span>(fcmred, <span class="at">min_freq =</span> <span class="fl">0.8</span>, <span class="at">vertex_size =</span> size<span class="sc">/</span><span class="fu">max</span>(size) <span class="sc">*</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a>size <span class="ot">&lt;-</span> <span class="fu">log</span>(<span class="fu">colSums</span>(<span class="fu">dfm_select</span>(dfm, feat, <span class="at">selection =</span> <span class="st">&quot;keep&quot;</span>)))</span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">144</span>)</span>
+<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_network</span>(fcmred, <span class="at">min_freq =</span> <span class="fl">0.8</span>, <span class="at">vertex_size =</span> size<span class="sc">/</span><span class="fu">max</span>(size) <span class="sc">*</span> <span class="dv">3</span>)</span></code></pre></div>
 </div>
 <div id="analyse-statistique" class="section level3">
 <h3>Analyse statistique</h3>
 <div id="fréquences" class="section level4">
 <h4>Fréquences</h4>
 <p>Sort les 5 mots les plus utilisés pour chaque ages</p>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a>freq <span class="ot">&lt;-</span> <span class="fu">textstat_frequency</span>(dfm, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">groups =</span> age)</span>
-<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(freq)</span></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>freq <span class="ot">&lt;-</span> <span class="fu">textstat_frequency</span>(dfm, <span class="at">n =</span> <span class="dv">5</span>, <span class="at">groups =</span> age)</span>
+<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(freq)</span></code></pre></div>
 <p>Fait un graphique des 15 mots les plus frequents</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="sc">%&gt;%</span></span>
-<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">textstat_frequency</span>(<span class="at">n =</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(feature, frequency), <span class="at">y =</span> frequency)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb129-4"><a href="#cb129-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Frequency&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a>dfm <span class="sc">%&gt;%</span></span>
+<span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">textstat_frequency</span>(<span class="at">n =</span> <span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb134-3"><a href="#cb134-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(feature, frequency), <span class="at">y =</span> frequency)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb134-4"><a href="#cb134-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_flip</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Frequency&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p>Sort le nuage des mots</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">132</span>)</span>
-<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(dfm, <span class="at">max_words =</span> <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">132</span>)</span>
+<span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(dfm, <span class="at">max_words =</span> <span class="dv">100</span>)</span></code></pre></div>
 </div>
 <div id="diversité-léxicale" class="section level4">
 <h4>Diversité léxicale</h4>
 <p>Donne des indications de diversité lexicale (ici j’ai fait les calculs sur l’âge, ça a plus de sens que sur les prises de paroles / phrases)</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>lexdiv <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfmage)</span>
-<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(lexdiv, <span class="dv">50</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>lexdiv <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfmage)</span>
+<span id="cb136-2"><a href="#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(lexdiv, <span class="dv">50</span>)</span></code></pre></div>
 <p>Fait une jolie représentation graphique de l’indicateur de diversité lexicale</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lexdiv<span class="sc">$</span>TTR, <span class="at">xaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xlab =</span> <span class="cn">NULL</span>, <span class="at">ylab =</span> <span class="st">&quot;TTR&quot;</span>)</span>
-<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span>
-<span id="cb132-3"><a href="#cb132-3" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(lexdiv)), <span class="at">labels =</span> dfmage<span class="sc">$</span>age)</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lexdiv<span class="sc">$</span>TTR, <span class="at">xaxt =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xlab =</span> <span class="cn">NULL</span>, <span class="at">ylab =</span> <span class="st">&quot;TTR&quot;</span>)</span>
+<span id="cb137-2"><a href="#cb137-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span>
+<span id="cb137-3"><a href="#cb137-3" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at =</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(lexdiv)), <span class="at">labels =</span> dfmage<span class="sc">$</span>age)</span></code></pre></div>
 </div>
 <div id="calculer-des-distances-entre-les-textes-catégories" class="section level4">
 <h4>Calculer des distances entre les textes / catégories</h4>
 <p>Calcule des distances entre les documents</p>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> <span class="fu">as.dist</span>(<span class="fu">textstat_dist</span>(dfmage))</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> <span class="fu">as.dist</span>(<span class="fu">textstat_dist</span>(dfmage))</span></code></pre></div>
 <p>Distances qui peuvent permettre de structurer une classification</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a>clust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(dist)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a>clust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(dist)</span></code></pre></div>
 <p>Que l’on peut représenter sous forme d’arbre</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(clust, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>, <span class="at">ylab =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(clust, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>, <span class="at">ylab =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 </div>
 <div id="calculer-les-fréquences-relatives-keyness" class="section level4">
 <h4>Calculer les fréquences relatives (Keyness)</h4>
 <p>Sort les tendances, les mots qui sont les plus utilisés avant et aprés 3 ans [OBLIGE DE FAIRE 2 CATEGORIES.]</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a>keyn <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm, <span class="at">target =</span> dfm<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="#cb141-1" aria-hidden="true" tabindex="-1"></a>keyn <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm, <span class="at">target =</span> dfm<span class="sc">$</span>age <span class="sc">&gt;</span> <span class="dv">3</span>)</span></code></pre></div>
 <p>Joli graphique</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_keyness</span>(keyn)</span></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_keyness</span>(keyn)</span></code></pre></div>
 </div>
 </div>
 <div id="faire-une-afc-sur-le-dfm" class="section level3">
 <h3>Faire une AFC sur le DFM</h3>
 <p>C’est pas joli-joli ça, je pense que ça marchera bien mieu sur r.temis …</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>afc <span class="ot">&lt;-</span> <span class="fu">textmodel_ca</span>(dfmage)</span>
-<span id="cb138-2"><a href="#cb138-2" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_scale1d</span>(afc1)</span>
-<span id="cb138-3"><a href="#cb138-3" aria-hidden="true" tabindex="-1"></a>coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dim1 =</span> <span class="fu">coef</span>(afc, <span class="at">doc_dim =</span> <span class="dv">1</span>)<span class="sc">$</span>coef_document, <span class="at">dim2 =</span> <span class="fu">coef</span>(afc,</span>
-<span id="cb138-4"><a href="#cb138-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc_dim =</span> <span class="dv">2</span>)<span class="sc">$</span>coef_document)</span>
-<span id="cb138-5"><a href="#cb138-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(coord)</span>
-<span id="cb138-6"><a href="#cb138-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Dimension 1&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Dimension 2&quot;</span>)</span>
-<span id="cb138-7"><a href="#cb138-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span>
-<span id="cb138-8"><a href="#cb138-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(coord<span class="sc">$</span>dim1, coord<span class="sc">$</span>dim2, <span class="at">labels =</span> <span class="fu">rownames</span>(afc), <span class="at">cex =</span> <span class="fl">0.8</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb138-9"><a href="#cb138-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.7</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="#cb143-1" aria-hidden="true" tabindex="-1"></a>afc <span class="ot">&lt;-</span> <span class="fu">textmodel_ca</span>(dfmage)</span>
+<span id="cb143-2"><a href="#cb143-2" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_scale1d</span>(afc1)</span>
+<span id="cb143-3"><a href="#cb143-3" aria-hidden="true" tabindex="-1"></a>coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dim1 =</span> <span class="fu">coef</span>(afc, <span class="at">doc_dim =</span> <span class="dv">1</span>)<span class="sc">$</span>coef_document, <span class="at">dim2 =</span> <span class="fu">coef</span>(afc,</span>
+<span id="cb143-4"><a href="#cb143-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc_dim =</span> <span class="dv">2</span>)<span class="sc">$</span>coef_document)</span>
+<span id="cb143-5"><a href="#cb143-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(coord)</span>
+<span id="cb143-6"><a href="#cb143-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Dimension 1&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Dimension 2&quot;</span>)</span>
+<span id="cb143-7"><a href="#cb143-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span>
+<span id="cb143-8"><a href="#cb143-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(coord<span class="sc">$</span>dim1, coord<span class="sc">$</span>dim2, <span class="at">labels =</span> <span class="fu">rownames</span>(afc), <span class="at">cex =</span> <span class="fl">0.8</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
+<span id="cb143-9"><a href="#cb143-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.7</span>))</span></code></pre></div>
 </div>
 </div>
 </div>
