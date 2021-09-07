@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2021-09-04" />
+        <meta name="date" content="2021-09-07" />
     
     <title>ANALYSE TEXTUELLE ET LEXICALE</title>
 
@@ -222,7 +222,7 @@
       </ul>
     </div>
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
-                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-04</p>
+                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-07</p>
           </div>
    </div>
      
@@ -333,7 +333,8 @@
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.corpora)</span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(text2vec)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readtext)</span></code></pre></div>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readtext)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(explor)</span></code></pre></div>
 <div id="import-des-données" class="section level2">
 <h2>Import des données</h2>
 <p>import le tableau qui contient les textex en première colonne</p>
@@ -470,16 +471,8 @@
 </div>
 <div id="faire-une-afc-sur-le-dfm" class="section level2">
 <h2>Faire une AFC sur le DFM</h2>
-<p>C’est pas joli-joli ça, je pense que ça marchera bien mieu sur r.temis …</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>afc <span class="ot">&lt;-</span> <span class="fu">textmodel_ca</span>(dfmage)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_scale1d</span>(afc1)</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>coord <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">dim1 =</span> <span class="fu">coef</span>(afc, <span class="at">doc_dim =</span> <span class="dv">1</span>)<span class="sc">$</span>coef_document, <span class="at">dim2 =</span> <span class="fu">coef</span>(afc,</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">doc_dim =</span> <span class="dv">2</span>)<span class="sc">$</span>coef_document)</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(coord)</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">2</span>), <span class="at">type =</span> <span class="st">&quot;n&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Dimension 1&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Dimension 2&quot;</span>)</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>()</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(coord<span class="sc">$</span>dim1, coord<span class="sc">$</span>dim2, <span class="at">labels =</span> <span class="fu">rownames</span>(afc), <span class="at">cex =</span> <span class="fl">0.8</span>, <span class="at">col =</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>,</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.7</span>))</span></code></pre></div>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">explor</span>(afc)</span></code></pre></div>
 </div>
 </div>
 </div>
