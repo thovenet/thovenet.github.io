@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2021-09-07" />
+        <meta name="date" content="2021-09-10" />
     
     <title>Boite à outils R</title>
 
@@ -256,7 +256,7 @@
       </ul>
     </div>
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
-                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-07</p>
+                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-10</p>
           </div>
    </div>
      
@@ -675,16 +675,22 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Factoshiny</span>(DATA)</span></code></pre></div>
 <div id="afc" class="section level2">
 <h2>AFC</h2>
+<p>On commence par construire le tableau croisé sur lequel on veut faire porter l’AFC :</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">table</span>(Var1, Var2)</span></code></pre></div>
+<p>Puis on construit l’AFC :</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>AFC <span class="ot">&lt;-</span> <span class="fu">CA</span>(t)</span></code></pre></div>
+<p>Et on l’explor avec explor :</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">explor</span>(AFC)</span></code></pre></div>
 </div>
 <div id="acp" class="section level2">
 <h2>ACP</h2>
 <div id="réduire-le-corpus-pour-navoir-que-les-variables-interessantes" class="section level3">
 <h3>Réduire le corpus pour n’avoir que les variables interessantes</h3>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>DAF <span class="ot">&lt;-</span> DATA[, <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>, <span class="st">&quot;Var2&quot;</span>, <span class="st">&quot;Var3&quot;</span>, ..., <span class="st">&quot;Varn&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>DAF <span class="ot">&lt;-</span> DATA[, <span class="fu">c</span>(<span class="st">&quot;Var1&quot;</span>, <span class="st">&quot;Var2&quot;</span>, <span class="st">&quot;Var3&quot;</span>, ..., <span class="st">&quot;Varn&quot;</span>)]</span></code></pre></div>
 </div>
 <div id="construire-acp-avec-factominer" class="section level3">
 <h3>Construire ACP avec <em>factominer</em></h3>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>ACP <span class="ot">&lt;-</span> <span class="fu">PCA</span>(DATA, <span class="at">quali.sup =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">6</span>), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>ACP <span class="ot">&lt;-</span> <span class="fu">PCA</span>(DATA, <span class="at">quali.sup =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>), <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">6</span>), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p>(On précise les colonnes qui doivent être considérées comme illustratives, on peut faire de même pour les individus)</p>
 </div>
 </div>
@@ -692,16 +698,83 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <h2>ACM</h2>
 <div id="construire-acm-avec-factominer" class="section level3">
 <h3>Construire ACM avec factominer</h3>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>ACM <span class="ot">&lt;-</span> <span class="fu">MCA</span>(DATA, <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, ..., n), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>ACM <span class="ot">&lt;-</span> <span class="fu">MCA</span>(DATA, <span class="at">quanti.sup =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, ..., n), <span class="at">graph =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="explorer-les-résultats-avec-explor" class="section level3">
 <h3>Explorer les résultats avec explor</h3>
-<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(explor)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">explor</span>(ACM)</span></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(explor)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">explor</span>(ACM)</span></code></pre></div>
 </div>
 </div>
 <div id="classification-ascendante-hierarachique" class="section level2">
 <h2>Classification Ascendante Hierarachique</h2>
+<p><a href="http://larmarange.github.io/analyse-R/classification-ascendante-hierarchique.html" class="uri">http://larmarange.github.io/analyse-R/classification-ascendante-hierarchique.html</a></p>
+<p>Package qui accelere la construction de la classification :</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fastcluster)</span></code></pre></div>
+<p>Package d’analyse géométrique de données qui permet aussi de construire des matrices de distances :</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ade4)</span></code></pre></div>
+<p>Package utile pour calculer des distances de gower :</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cluster)</span></code></pre></div>
+<div id="avant-tout-il-faut-construire-une-matrice-des-distances" class="section level3">
+<h3>Avant tout, il faut construire une matrice des distances</h3>
+<p>A partir des axes d’une acm ou d’une acp :</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>MatDist <span class="ot">&lt;-</span> <span class="fu">dist.dudi</span>(acm)</span></code></pre></div>
+<p>A partir d’un jeu de données (pour baser la matrice sur une distance de gower) :</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>Mat.dist <span class="ot">&lt;-</span> <span class="fu">daisy</span>(DONNEES, <span class="at">metric =</span> <span class="st">&quot;gower&quot;</span>)</span></code></pre></div>
+</div>
+<div id="construction-de-la-classification" class="section level3">
+<h3>Construction de la classification :</h3>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>clust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(MATRICE_DISTANCES, <span class="at">method =</span> <span class="st">&quot;ward.D2&quot;</span>)</span></code></pre></div>
+<p>l’argument ‘method’ peut prendre des termes variés selon la methode de classification que l’on veut utiliser (ici méthode de Ward appliquée au carré des distances)</p>
+</div>
+<div id="affichage-du-dendogramme" class="section level3">
+<h3>Affichage du dendogramme :</h3>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(clust, <span class="at">labels =</span> F)</span></code></pre></div>
+<p>ou, en un peu plus joli :</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdendro)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdendrogram</span>(clust, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+</div>
+<div id="découper-le-dendogramme" class="section level3">
+<h3>Découper le dendogramme :</h3>
+<p>On commence par se représenter l’évolution de l’inertie selon le nombre de classes pour trouver d’eventuels paliers de façon visuelle :</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>inertie <span class="ot">&lt;-</span> <span class="fu">sort</span>(clust<span class="sc">$</span>height, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inertie[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">type =</span> <span class="st">&quot;s&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Nombre de classes&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Inertie&quot;</span>)</span></code></pre></div>
+<p>En général, ça suffit à mettre en avant les paliers pour la coupures. On peut même les représenter graphiquement avec des repères sur le graphique de l’inertie et sur le dendogramme :</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(inertie[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">type =</span> <span class="st">&quot;s&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Nombre de classes&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Inertie&quot;</span>)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>), inertie[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">7</span>)], <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;green3&quot;</span>, <span class="st">&quot;red3&quot;</span>), <span class="at">cex =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">3</span>)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(clust, <span class="at">labels =</span> <span class="cn">FALSE</span>, <span class="at">main =</span> <span class="st">&quot;Partition en 2 ou 7 classes&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sub =</span> <span class="st">&quot;&quot;</span>, <span class="at">axes =</span> <span class="cn">FALSE</span>, <span class="at">hang =</span> <span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rect.hclust</span>(clust, <span class="dv">2</span>, <span class="at">border =</span> <span class="st">&quot;green3&quot;</span>)</span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rect.hclust</span>(clust, <span class="dv">7</span>, <span class="at">border =</span> <span class="st">&quot;red3&quot;</span>)</span></code></pre></div>
+<p>Si ce n’est pas trés clair visuellement, ou pour avoir une confirmation, on peut utiliser :</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(JLutils)  <span class="co"># Si le package n&#39;est pas mis à jour, on utilisera l&#39;alternative de J. Larmarange :</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="fu">url</span>(<span class="st">&quot;https://raw.githubusercontent.com/larmarange/JLutils/master/R/clustering.R&quot;</span>))</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a><span class="fu">best.cutree</span>(clust)</span></code></pre></div>
+<p>On peut aller plus loin dans l’analyse de la solidité des classes avec :</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(WeightedCluster)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">as.clustrange</span>(clust, dist))</span></code></pre></div>
+</div>
+<div id="couper-larbre-pour-construire-la-typologie" class="section level3">
+<h3>Couper l’arbre pour construire la typologie</h3>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a>typo <span class="ot">&lt;-</span> <span class="fu">cutree</span>(clust, <span class="dv">5</span>)</span></code></pre></div>
+<p>(si on veut 5 classes)</p>
+<p>On peut créer une variable typologie dans la base de données initiale :</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>DATA<span class="sc">$</span>typo <span class="ot">&lt;-</span> <span class="fu">cutree</span>(clust, <span class="dv">5</span>)</span></code></pre></div>
+<p>(si on veut 5 classes)</p>
+</div>
+<div id="caractériser-la-typologie" class="section level3">
+<h3>Caractériser la typologie</h3>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>DATA <span class="sc">%&gt;%</span></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tbl_summary</span>(<span class="at">by =</span> typo)</span></code></pre></div>
+<p>sort la statistique descriptive permettant de caractériser les classes</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GGally)</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>DATA<span class="sc">$</span>typo <span class="ot">&lt;-</span> <span class="fu">factor</span>(DATA<span class="sc">$</span>typo)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggtable</span>(DATA, <span class="at">columnsX =</span> <span class="st">&quot;typo&quot;</span>, <span class="at">columnsY =</span> <span class="fu">names</span>(DATA)[<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>], <span class="at">cells =</span> <span class="st">&quot;col.prop&quot;</span>,</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;std.resid&quot;</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">&quot;Résidus standardizés du Chi²&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p>(Penser à ajuster le [1:9] selon le nombre de colonnes du tableau de données) Sort le tableau des résidus du khi2 pour bien repérer les différences</p>
+</div>
 </div>
 </div>
 <div id="modelisation-regression" class="section level1">
@@ -712,79 +785,79 @@ NOMn &lt;- read_excel(&quot;fichier.xlsx&quot;, sheet = &quot;feuille n&quot;)</
 <p><a href="https://delladata.fr/anova-a-un-facteur-partie-1/" class="uri">https://delladata.fr/anova-a-un-facteur-partie-1/</a></p>
 <div id="construction-du-modèle" class="section level3">
 <h3>Construction du modèle :</h3>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
 <p>ou</p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aov</span>(VarNum <span class="sc">~</span> VarCat, <span class="at">data =</span> DATA)</span></code></pre></div>
 </div>
 <div id="visualisation-des-résultats" class="section level3">
 <h3>Visualisation des résultats :</h3>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(MODEL)</span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(MODEL)</span></code></pre></div>
 <p>ou (si on a construit le modele avec ‘aov’)</p>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(MODEL)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(MODEL)</span></code></pre></div>
 </div>
 <div id="vérification-des-hypothèses" class="section level3">
 <h3>Vérification des hypothèses</h3>
 <div id="indépendance-des-résidus" class="section level4">
 <h4>Indépendance des résidus</h4>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(MODEL)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">durbinWatsonTest</span>(MODEL)</span></code></pre></div>
 </div>
 <div id="normalité-des-individus" class="section level4">
 <h4>Normalité des individus</h4>
-<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(MODEL))</span></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(<span class="fu">residuals</span>(MODEL))</span></code></pre></div>
 </div>
 <div id="homogénéité-des-variances" class="section level4">
 <h4>Homogénéité des variances</h4>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(<span class="fu">residuals</span>(MODEL) <span class="sc">~</span> DATA<span class="sc">$</span>VarCat)</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bartlett.test</span>(<span class="fu">residuals</span>(MODEL) <span class="sc">~</span> DATA<span class="sc">$</span>VarCat)</span></code></pre></div>
 </div>
 <div id="graphiques-de-base-pour-illustrer-tout-ça" class="section level4">
 <h4>4 Graphiques de base pour illustrer tout ça</h4>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm1)</span></code></pre></div>
 </div>
 </div>
 <div id="comparaison-des-moyennes-pour-voir-les-variations" class="section level3">
 <h3>Comparaison des moyennes pour voir les variations</h3>
 <div id="comparaison-à-un-cas-témoin-qui-est-la-référence-du-modele" class="section level4">
 <h4>Comparaison à un “cas témoin” (qui est la référence du modele)</h4>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>compDunnett <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Dunnett&quot;</span>))</span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compDunnett)</span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compDunnett)</span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multcomp)</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>compDunnett <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Dunnett&quot;</span>))</span>
+<span id="cb104-3"><a href="#cb104-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compDunnett)</span>
+<span id="cb104-4"><a href="#cb104-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compDunnett)</span>
+<span id="cb104-5"><a href="#cb104-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
+<span id="cb104-6"><a href="#cb104-6" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
 </div>
 <div id="comparaison-de-toutes-les-modalités-ensemble" class="section level4">
 <h4>Comparaison de toutes les modalités ensemble</h4>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>compTukey <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compTukey)</span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compTukey)</span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>compTukey <span class="ot">&lt;-</span> <span class="fu">glht</span>(MODEL, <span class="at">linfct =</span> <span class="fu">mcp</span>(<span class="at">VarCat =</span> <span class="st">&quot;Tukey&quot;</span>))</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(compTukey)</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(compTukey)</span>
+<span id="cb105-4"><a href="#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Si besoin, on peut ajuster les paramètres de l&#39;affichage avec</span></span>
+<span id="cb105-5"><a href="#cb105-5" aria-hidden="true" tabindex="-1"></a><span class="co"># par(mar=c(3,18,3,3))</span></span></code></pre></div>
 <p>A partir de ces comparaisons, on peut générer des groupes de modalités en attribuant un système de lettre aux modalités. Si 2 modalités partagent une même lettre, il n’y a pas d’écart significatif entre elles.</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>tuk.cld <span class="ot">&lt;-</span> <span class="fu">cld</span>(compTukey)</span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>tuk.cld</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a>tuk.cld <span class="ot">&lt;-</span> <span class="fu">cld</span>(compTukey)</span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a>tuk.cld</span></code></pre></div>
 <p>Ce système de lettre peut ensuite être indexé et être réutilisé dans un graphique par exemple.</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>letters <span class="ot">&lt;-</span> tuk.cld<span class="sc">$</span>mcletters<span class="sc">$</span>Letters</span>
-<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>myletters_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">VarCat =</span> <span class="fu">levels</span>(Data<span class="sc">$</span>VarCat), <span class="at">letters =</span> letters)</span>
-<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>myletters_df</span>
-<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(DATA, <span class="fu">aes</span>(<span class="at">x =</span> VarCat, <span class="at">y =</span> VarNum, <span class="at">colour =</span> VarCat, <span class="at">fill =</span> VarCat)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="dv">0</span>,</span>
-<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
-<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="at">data =</span> myletters_df,</span>
-<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> letters, <span class="at">y =</span> <span class="dv">30</span>), <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>letters <span class="ot">&lt;-</span> tuk.cld<span class="sc">$</span>mcletters<span class="sc">$</span>Letters</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>myletters_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">VarCat =</span> <span class="fu">levels</span>(Data<span class="sc">$</span>VarCat), <span class="at">letters =</span> letters)</span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>myletters_df</span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(DATA, <span class="fu">aes</span>(<span class="at">x =</span> VarCat, <span class="at">y =</span> VarNum, <span class="at">colour =</span> VarCat, <span class="at">fill =</span> VarCat)) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="at">outlier.alpha =</span> <span class="dv">0</span>,</span>
+<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">geom_jitter</span>(<span class="at">width =</span> <span class="fl">0.25</span>) <span class="sc">+</span> <span class="fu">stat_summary</span>(<span class="at">fun.y =</span> mean, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb107-6"><a href="#cb107-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">shape =</span> <span class="dv">18</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb107-7"><a href="#cb107-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">geom_text</span>(<span class="at">data =</span> myletters_df,</span>
+<span id="cb107-8"><a href="#cb107-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> letters, <span class="at">y =</span> <span class="dv">30</span>), <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">5</span>)</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="regression-linéaire-multiple" class="section level2">
 <h2>Regression linéaire multiple</h2>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forestmodel)</span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(A06X_SCsegm <span class="sc">~</span> Lectores_ManuON <span class="sc">+</span> Lectores_FichON <span class="sc">+</span> Lectores_WebON <span class="sc">+</span> Lectores_LogiON,</span>
-<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> cp)</span>
-<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
-<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod, . <span class="sc">~</span> ., <span class="at">test =</span> <span class="st">&quot;F&quot;</span>)</span>
-<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(mod))</span>
-<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a><span class="fu">forest_model</span>(mod)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forestmodel)</span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(A06X_SCsegm <span class="sc">~</span> Lectores_ManuON <span class="sc">+</span> Lectores_FichON <span class="sc">+</span> Lectores_WebON <span class="sc">+</span> Lectores_LogiON,</span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> cp)</span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(mod)</span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(mod, . <span class="sc">~</span> ., <span class="at">test =</span> <span class="st">&quot;F&quot;</span>)</span>
+<span id="cb108-6"><a href="#cb108-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">resid</span>(mod))</span>
+<span id="cb108-7"><a href="#cb108-7" aria-hidden="true" tabindex="-1"></a><span class="fu">forest_model</span>(mod)</span></code></pre></div>
 </div>
 <div id="regression-logistique" class="section level2">
 <h2>Regression logistique</h2>
