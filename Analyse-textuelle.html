@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2021-09-07" />
+        <meta name="date" content="2021-09-10" />
     
     <title>ANALYSE TEXTUELLE ET LEXICALE</title>
 
@@ -222,7 +222,7 @@
       </ul>
     </div>
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
-                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-07</p>
+                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-10</p>
           </div>
    </div>
      
@@ -243,7 +243,7 @@
 </div>
 <div id="avec-r.temis" class="section level1">
 <h1><strong>Avec R.temis</strong></h1>
-<p><a href="https://mate-shs.cnrs.fr/actions/tutomate/tuto33-r-temis-bouchet-garnier/" class="uri">https://mate-shs.cnrs.fr/actions/tutomate/tuto33-r-temis-bouchet-garnier/</a></p>
+<p><a href="https://mate-shs.cnrs.fr/actions/tutomate/tuto33-r-temis-bouchet-garnier/" class="uri">https://mate-shs.cnrs.fr/actions/tutomate/tuto33-r-temis-bouchet-garnier/</a> <a href="https://rtemis.hypotheses.org/r-temis-dans-rstudio" class="uri">https://rtemis.hypotheses.org/r-temis-dans-rstudio</a></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(R.temis)</span></code></pre></div>
 <div id="import-de-corpus" class="section level2">
 <h2>Import de corpus</h2>
@@ -325,7 +325,7 @@
 <div id="avec-quanteda" class="section level1">
 <h1><strong>Avec quanteda</strong></h1>
 <p><a href="https://tutorials.quanteda.io/introduction/" class="uri">https://tutorials.quanteda.io/introduction/</a> <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf" class="uri">https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf</a></p>
-<p><span class="smallcaps"><strong>WARNING : NE PAS CHARGER <em>R.temis</em> <u>ET</u> <em>quanteda</em> EN MEME TEMPS : IL RISQUE D’Y AVOIR CONFLIT SUR LA FONCTION <em>tm</em>. POUR UTILISER LES FONCTION DE L’UN DES PACKAGES ALORS QUE L’AUTRE EST CHARGE, ON UTILISE LES <em>::</em> (PAR EXEMPLE, <em>quanteda :: fonction</em>)</strong></span></p>
+<p><span class="smallcaps"><strong>WARNING : NE PAS CHARGER <em>R.temis</em><u>ET</u><em>quanteda</em> EN MEME TEMPS : IL RISQUE D’Y AVOIR CONFLIT SUR LA FONCTION <em>tm</em>. POUR UTILISER LES FONCTION DE L’UN DES PACKAGES ALORS QUE L’AUTRE EST CHARGE, ON UTILISE LES <em>::</em> (PAR EXEMPLE, <em>quanteda :: fonction</em>)</strong></span></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">110</span>)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textstats)</span>
@@ -460,6 +460,7 @@
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>clust <span class="ot">&lt;-</span> <span class="fu">hclust</span>(dist)</span></code></pre></div>
 <p>Que l’on peut représenter sous forme d’arbre</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(clust, <span class="at">xlab =</span> <span class="st">&quot;Distance&quot;</span>, <span class="at">ylab =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<p>VOIR LA SECTION SUR LA CLASSIFICATION : <a href="https://thovenet.github.io/#classification-ascendante-hierarachique">ICI</a></p>
 </div>
 <div id="calculer-les-fréquences-relatives-keyness" class="section level3">
 <h3>Calculer les fréquences relatives (Keyness)</h3>
