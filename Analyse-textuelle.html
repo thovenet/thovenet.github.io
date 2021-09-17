@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2021-09-10" />
+        <meta name="date" content="2021-09-17" />
     
     <title>ANALYSE TEXTUELLE ET LEXICALE</title>
 
@@ -222,7 +222,7 @@
       </ul>
     </div>
     <div id="postamble" data-toggle="wy-nav-shift" class="status">
-                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-10</p>
+                  <p class="date"><span class="glyphicon glyphicon-calendar"></span> 2021-09-17</p>
           </div>
    </div>
      
@@ -444,7 +444,7 @@
 </div>
 <div id="diversité-léxicale" class="section level3">
 <h3>Diversité léxicale</h3>
-<p>Donne des indications de diversité lexicale (ici j’ai fait les calculs sur l’âge, ça a plus de sens que sur les prises de paroles / phrases)</p>
+<p>Donne un indicateur de la diversité lexicale : le TTR pour type-token ratio qui est le raport entre le nombre de mots différents et le nombre d’occurences des mots. Attention, la taille du texte joue beaucoup sur cet indicateur : un texte court aura par exemple plus tendance a avoir un TTR elevé.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>lexdiv <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfmage)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(lexdiv, <span class="dv">50</span>)</span></code></pre></div>
 <p>Fait une jolie représentation graphique de l’indicateur de diversité lexicale</p>
