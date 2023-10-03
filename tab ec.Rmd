@@ -1,0 +1,122 @@
+---
+title: "Construction du tableau des écarts bruts et nets"
+author: "T. VENET"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Les packages
+
+On aura principalement besoin du `tidyverse` et de `gtsummary`. D'autres packages seront mobilisés de manière plus ponctuelle et seront appellés directement dans le programme.
+
+```{r packages, echo=TRUE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gtsummary)
+```
+
+# Les données
+
+Pour l'exemple, on utilise les données 'titanic'. On recode juste un peu les variables age et classe, qui seront utilisées pour la suite.
+
+```{r données}
+d <- titanic::titanic_train %>%
+  mutate(Age2 = cut(Age, include.lowest = TRUE, right = FALSE, dig.lab = 4,
+                    breaks = c(0, 15, 30, 50, 80),
+                    labels = c("Moins de 15 ans", "15-30 ans", "30-50 ans", "50 ans ou plus")),
+         Classe = fct_recode(as.character(Pclass), "1ere" = "1", "2eme" = "2", "3eme" = "3"))
+```
+
+# Construction du tableau des écarts brut
+
+## Le tableau de fréquences
+
+Pour que les opérations qui suivent focntionnent bien, il faut commencer par construire un tableau de fréquence en trois colonnes :
+
+-   Nom des modalités en première colonne (cat),
+
+-   Fréquence de survenue de l'evenement en deuxième colonne (freq),
+
+-   Nom des variables en troisième colonne (groups)
+
+```{r tab_freq}
+t <- d %>% tbl_summary(include = c(Classe, Sex, Age2),
+                  by = Survived,
+                  missing = "no",
+                  statistic = everything() ~ "{p}",
+                  percent = "row",
+                  digits = everything() ~ 1) %>% as_tibble() %>% 
+  select(cat = `**Characteristic**`, freq = `**1**, N = 342`) %>%
+  filter(!is.na(freq)) %>%
+  mutate(groups = c("Classe", "Classe", "Classe",
+                    "Sexe", "Sexe",
+                    "Age","Age","Age","Age"),
+         freq = as.numeric(freq))
+```
+
+```{r afft, echo=FALSE, fig.width=10}
+gt::gt(t)
+```
+
+## Calcul des écarts bruts
+
+A partir de ce tableau de fréquences, on peut calculer le tableau des écarts bruts.
+
+```{r tab_ec_bruts}
+l <- split(x = t, f = t[["groups"]])
+
+for(i in 1:length(l)) {
+ ref <- as.character(l[[i]][1,1])
+valref <- l[[i]]["freq"][l[[i]][,1]==ref]
+l[[i]] <- l[[i]] %>% mutate(Ecart_brut = if_else(
+  l[[i]][,1]==ref, "Réf.",
+  scales::label_number(style_positive = "plus", suffix = "%", accuracy = 0.1)(freq - valref))) 
+}
+
+t2 <- bind_rows(l[]) %>% relocate("groups")
+```
+
+```{r afft2, echo=FALSE, fig.width=10}
+gt::gt(t2)
+```
+
+# Contruction du tableau des écarts nets
+
+## Construction du modele
+
+```{r mod}
+mod <- glm(Survived ~  Classe + Sex + Age2, data = d)
+```
+
+## tableau des ecarts nets ----
+
+On utilise les fonctions de broom.helper (cf. <https://larmarange.github.io/guide-R/analyses/estimations-marginales.html#pentes-marginales-effets-marginaux>)
+
+```{r tab_ec_net}
+EN <- mod %>% tbl_regression(
+    tidy_fun = broom.helpers::tidy_margins,
+    estimate_fun = scales::label_percent(accuracy = 0.1, style_positive = "plus")) %>%
+  as_tibble() %>% select(cat = `**Characteristic**`,
+                         Ecart_net = `**Average Marginal Effects**`,
+                         Signif = `**p-value**`) %>%
+filter(!is.na(Ecart_net))
+```
+
+```{r affEN, echo=FALSE, fig.width=10}
+gt::gt(EN)
+```
+# Construction du tableau final
+
+```{r tab_final, message=FALSE, warning=FALSE}
+t3 <- t2 %>% left_join(EN) %>% mutate(
+  Ecart_net = if_else(Ecart_brut == "Réf.", "Réf.", Ecart_net),
+  Signif = if_else(Ecart_brut == "Réf.", "Réf.", Signif))
+```
+```{r afft3, echo=FALSE, fig.width=10}
+gt::gt(t3)
+```

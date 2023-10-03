@@ -1,0 +1,469 @@
+---
+title: "ANALYSE TEXTUELLE ET LEXICALE"
+author: "T. VENET"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE,
+               eval = FALSE,
+               results = "hide")
+opts_knit$set(width=75)
+```
+
+# Manuels / aides mémoire
+
+<https://sites.google.com/site/rgraphiques/5--applications/textmining-en-langage-r#h.p_Ct59saDW6-E8> <https://www.ceped.org/IMG/pdf/appliquer_les_methodes_de_la_statistique_textuelle-.pdf>
+
+# Rappel des packages utiles
+
+```{r}
+library(tidyverse)
+library(questionr)
+library(gtsummary)
+theme_gtsummary_language("fr", decimal.mark = ",", big.mark = " ")  # Option de mise en forme des tableaux gtsummary
+library(esquisse)  # si l'addins ne s'active pas dans les menus, on peut utiliser la fonction esquisse::esquisser()
+options(scipen = 999)  # Pour désactiver l'écriture scientifique ( = 0 pour réactiver)
+```
+
+# **Avec R.temis**
+
+-   <https://mate-shs.cnrs.fr/actions/tutomate/tuto33-r-temis-bouchet-garnier/>
+-   <https://rtemis.hypotheses.org/r-temis-dans-rstudio>
+
+```{r}
+library(R.temis)
+```
+
+## Import de corpus
+
+### En tableur :
+
+```{r}
+corpust <- import_corpus("lout.csv", format="csv",textcolumn = 1, language="fr")
+```
+
+### En texte :
+
+## Création du tableau lexical (DTM)
+
+```{r}
+dtmt <- build_dtm(corpust, remove_stopwords = F, remove_numbers = T)
+inspect(dtmt)
+```
+
+## Création du dictionnaire
+
+```{r}
+dict <- dictionary(dtmt, remove_stopwords = FALSE)
+View(dict)
+```
+
+## Voir les mots les plus employés
+
+```{r}
+frequent_terms(dtm, n=10)
+```
+
+On affiche la distibution des 10 mots les plus employés (occurrence et %).
+
+## Faire un nuage des mots (représenation visuelle du dictionnaire)
+
+```{r}
+set.seed(1)
+cloud <- word_cloud(dtm, color="blue", n=50, min.freq=5)
+```
+
+On affiche ici les mots d'au moins 5 occurrences et 50 mots au maximum.
+
+## Bilan lexical selon une variable catégorielle
+
+```{r}
+lexical_summary(dtmt, corpust, "age")
+```
+
+Sort des moyennes par ligne du tableur
+
+```{r}
+lexical_summary(dtmt, corpust, "age", unit = "global")
+```
+
+sort les statistiques pour l'ensemble du corpus
+
+## Trouver des termes spécifiques selon les modalité d'une variable
+
+specific_terms(dtmt,meta(corpust)\$age, n=20)
+
+## Repèrer des coocurences en faisant un réseau de mots
+
+```{r}
+terms_graph(dtmt, vertex.label.cex = 0.5, interactive = F)
+```
+
+## Sortir les co-occurence de termes choisi
+
+```{r}
+cooc_terms(dtmt, "moi", n=10)
+```
+
+## Analyse des correspondances sur le Tableau Lexical Entier
+
+```{r}
+resTLE <-corpus_ca(corpust, dtmt, sparsity=0.985)
+res <- explor::prepare_results(resTLE)
+explor::CA_var_plot(res, xax = 1, yax = 2, lev_sup = FALSE, var_sup = FALSE,
+                    var_sup_choice = , var_hide = "Row", var_lab_min_contrib = 1, col_var = "Position",
+                    symbol_var = "Type", size_var = NULL, size_range = c(10, 300), labels_size = 10,
+                    point_size = 10, transitions = TRUE, labels_positions = NULL, xlim = c(-5.48,
+                                                                                           4.84), ylim = c(-3.79, 6.52))
+```
+
+## Analyse des correspondances sur tableau lexical agrégé
+
+```{r}
+resTLA <- corpus_ca(corpust, dtmt, variables=c("age"), sparsity=0.98)
+res <- explor::prepare_results(resTLA)
+explor::CA_var_plot(res, xax = 1, yax = 2, lev_sup = FALSE, var_sup = FALSE,
+                    var_sup_choice = , var_hide = "None", var_lab_min_contrib = 1, col_var = "Position",
+                    symbol_var = "Type", size_var = NULL, size_range = c(10, 300), labels_size = 10,
+                    point_size = 11, transitions = TRUE, labels_positions = NULL, xlim = c(-1.08,1.51), ylim = c(-1.18, 1.4))
+
+```
+
+## Classification avec la methode Reinert
+
+```{r}
+dfm <- quanteda::as.dfm(dtmt)
+resrai <- rainette(dfm, min_uc_size = 3, k = 6)
+rainette_plot(resrai, dfm)
+```
+
+# **Avec quanteda**
+
+-   <https://tutorials.quanteda.io/introduction/>
+
+-   <https://raw.githubusercontent.com/rstudio/cheatsheets/master/translations/french/quanteda_fr.pdf>
+
+-   <https://ourednik.info/maps/2020/12/06/premiers-pas-avec-le-module-r-quanteda-pour-lanalyse-linguistique/>
+
+[**WARNING : NE PAS CHARGER *R.temis*[ET]{.ul}*quanteda* EN MEME TEMPS : IL RISQUE D'Y AVOIR CONFLIT SUR LA FONCTION *tm*. POUR UTILISER LES FONCTION DE L'UN DES PACKAGES ALORS QUE L'AUTRE EST CHARGE, ON UTILISE LES *::* (PAR EXEMPLE, *quanteda :: fonction*)**]{.smallcaps}
+
+```{r}
+library(quanteda)
+options(width = 110)
+library(quanteda.textstats)
+library(quanteda.textmodels)
+library(quanteda.textplots)
+library(quanteda.corpora)
+library(text2vec)
+library(readtext)
+library(explor)
+```
+
+## Import des données
+
+import le tableau qui contient les textex en première colonne
+
+```{r}
+loutq <- read.csv2("lout.csv")
+```
+
+Affiche les noms des colonnes pour controler que tout s'est bien passé
+
+```{r}
+names(loutq)
+```
+
+## Préparation du corpus
+
+Construit le corpus à proprement parler : à partir de la base loutq et en précisant la colonne qui contient les textes. Les autres colonnes seront considérées comme des variables en plus, des infos supplémentaires sur les textes (les documents du corpus)
+
+```{r}
+qorpus <- corpus(loutq, text_field = "phrases")
+```
+
+Affiche les 10 premiers documents et le nombre de tokens (jeton \~ mots ?), types (jetons uniques), sentences (phrases)
+
+```{r}
+summary(qorpus,10)
+```
+
+Permet de nommer les documents en fonction des variables catégorielles. Ca peut être pas mal pour s'y retrouver une fois qu'il y aura la colonne age + enfant (et donc avoir de Lou 2ans ; Lou 3ans ; Ugo 2ans ; etc.)
+
+```{r}
+docid <- paste(loutq$age
+               #,data$Var2,
+               #data$Var3, 
+               #sep = " "
+               ) 
+docnames(qorpus) <- docid
+```
+
+affiche les variables supplémentaires sur les documents qui sont disponibles dans la base de données
+
+```{r}
+head(docvars(qorpus))
+```
+
+Affiche le nombre de documents dans le corpus
+
+```{r}
+ndoc(qorpus)
+```
+
+Décompose le corpus en sous ensemble sur la base de critères (ici l'âge) et affiche le nombre de documents dans le corpus (pour contrôler que le subset s'est bien passé)
+
+```{r}
+q2ans <- corpus_subset(qorpus, age %in% c("2"))
+ndoc(q2ans)
+q3ans <- corpus_subset(qorpus, age %in% c("3"))
+ndoc(q3ans)
+q5ans <- corpus_subset(qorpus, age %in% c("5"))
+ndoc(q5ans)
+```
+
+Découpe les documents en phrases. La phrase devient la nouvelle unité de base
+
+```{r}
+qtotph <- corpus_reshape(qorpus, to = "sentences")
+ndoc(qtotph)
+```
+
+## Jouer avec les tokens
+
+Découpe les documents en unités 'tokens' :
+
+```{r}
+tok_qorpus <- tokens(qorpus) 
+```
+
+Sans la ponctuation, pour plus de clareté :
+
+```{r}
+tok_q_np <- tokens(qorpus, remove_punct = TRUE)
+```
+
+Permet de voir le ou les mots-clés voulus en contexte (ici 7 mots max avant et aprés) :
+
+```{r}
+kw_jenon <- kwic(tok_q_np, pattern = c("je","non"), window = 7)
+```
+
+Affiche le nombre voulu des premières citations :
+
+```{r}
+head(kw_je, 1000)
+```
+
+Permet de trouver une suite de mot et affiche le résultat dans un tableau, ça peut être plus facile à lire
+
+```{r}
+kw_moije <- kwic(tok_q_np, pattern = phrase("moi j*"))
+View(kw_moije)
+```
+
+Selection et suppression des tokens qui renvoient à des mots grammaticaux
+
+```{r}
+tok_q_np_ns <- tokens_select(tok_q_np, pattern = stopwords("fr"), selection = "remove")
+```
+
+ou (les deux fonctions donnent le même résultat)
+
+```{r}
+tok_q_np_ns <- tokens_remove(tok_q_np, pattern = stopwords("fr"))
+```
+
+Apparement il est possible de construires des tokens composés, mais là j'ai pas réussi. Point à revoir si la question se pose
+
+```{r}
+toks_q_np_ns_comp <- tokens_compound(tok_q_np_ns, pattern = phrase(c("moi j*")))
+kw_comp <- kwic(toks_q_np_ns_comp, pattern = c("moi_j*"))
+head(kw_comp, 10)
+```
+
+## Matrice de caract des documents (dfm)
+
+Construction de la matrice à partir des jetons
+
+```{r}
+dfm <- dfm(tok_q_np_ns)
+```
+
+Comme c'est une matrice, on calculer les sommes de lignes et de colonnes
+
+```{r}
+head(rowSums(dfm),10)
+head(colSums(dfm),10)
+```
+
+Sort les 10 mots les plus utilisés
+
+```{r}
+topfeatures(dfm,10)
+```
+
+Permet de retirer un mot (une colonne du DFM)
+
+```{r}
+dfm <- dfm_remove(dfm, pattern = "")
+```
+
+Ne grade que les mots qui ont une freq sup à 10%
+
+```{r}
+dfm2 <- dfm_trim(dfm, min_termfreq = 10)
+```
+
+Résume DFM aux modalité d'une variable catégorielle (equivalent du tableau lexical agrégé)
+
+```{r}
+dfmage <- dfm_group(dfm, groups = age)
+```
+
+## Matrice de co-occurence
+
+Construit la matrice des co-occurences
+
+```{r}
+fcm <- fcm(dfm)
+```
+
+Affiche les dimensions de la matrice
+
+```{r}
+dim(fcm)
+```
+
+Affiches les mots qui sont les plus souvent corrélés à d'autres mots
+
+```{r}
+topfeatures(fcm)
+```
+
+liste les 50 mots qui croisent le plus
+
+```{r}
+feat <- names(topfeatures(fcm,50))
+```
+
+reduit le tableau aux 50 mots qui croisent le plus
+
+```{r}
+fcmred <- fcm_select(fcm, pattern = feat, selection = "keep")
+dim(fcmred)
+```
+
+Génére un joli réseau de mots :
+
+```{r}
+size <- log(colSums(dfm_select(dfm, feat, selection = "keep")))
+set.seed(144)
+textplot_network(fcmred, min_freq = 0.8, vertex_size = size / max(size) * 3)
+```
+
+## Analyse statistique
+
+### Fréquences
+
+Sort les 5 mots les plus utilisés pour chaque ages
+
+```{r}
+freq <- textstat_frequency(dfm, n=5, groups = age)
+View(freq)
+```
+
+Fait un graphique des 15 mots les plus frequents
+
+```{r}
+dfm %>% 
+  textstat_frequency(n = 15) %>%
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) + 
+  geom_point() +
+  coord_flip() +
+  labs(x = NULL, y = "Frequency") +
+  theme_minimal()
+```
+
+Sort le nuage des mots
+
+```{r}
+set.seed(132)
+textplot_wordcloud(dfm, max_words = 100)
+```
+
+### Diversité léxicale
+
+Donne un indicateur de la diversité lexicale : le TTR pour type-token ratio qui est le raport entre le nombre de mots différents et le nombre d'occurences des mots. Attention, la taille du texte joue beaucoup sur cet indicateur : un texte court aura par exemple plus tendance a avoir un TTR elevé.
+
+```{r}
+lexdiv <- textstat_lexdiv(dfmage)
+tail(lexdiv,50)
+```
+
+Fait une jolie représentation graphique de l'indicateur de diversité lexicale
+
+```{r}
+plot(lexdiv$TTR, xaxt ="n", xlab = NULL, ylab = "TTR")
+grid()
+axis(1,at = seq_len(nrow(lexdiv)), labels = dfmage$age)
+```
+
+### Calculer des distances entre les textes / catégories
+
+Calcule des distances entre les documents
+
+```{r}
+dist <- as.dist(textstat_dist(dfmage))
+```
+
+Distances qui peuvent permettre de structurer une classification
+
+```{r}
+clust <- hclust(dist)
+```
+
+Que l'on peut représenter sous forme d'arbre
+
+```{r}
+plot(clust, xlab = "Distance", ylab = NULL)
+```
+
+VOIR LA SECTION SUR LA CLASSIFICATION : [ICI](https://thovenet.github.io/#classification-ascendante-hierarachique)
+
+### Calculer les fréquences relatives (Keyness)
+
+Sort les tendances, les mots qui sont les plus utilisés avant et aprés 3 ans [OBLIGE DE FAIRE 2 CATEGORIES.]
+
+```{r}
+keyn <- textstat_keyness(dfm, target = dfm$age > 3)
+```
+
+Joli graphique
+
+```{r}
+textplot_keyness(keyn)
+```
+
+## Faire une AFC sur le DFM
+
+```{r}
+afc <- textmodel_ca(dfmage)
+explor(afc)
+```
+
+
