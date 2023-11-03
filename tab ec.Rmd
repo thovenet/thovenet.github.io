@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Les packages
 
-On aura principalement besoin du `tidyverse` et de `gtsummary`. D'autres packages seront mobilisés de manière plus ponctuelle et seront appellés directement dans le programme.
+On aura principalement besoin du `tidyverse` et de `gtsummary`. D'autres packages seront mobilisés de manière plus ponctuelle et seront appelés directement dans le programme.
 
 ```{r packages, echo=TRUE, message=FALSE, warning=FALSE}
 library(tidyverse)

@@ -753,6 +753,48 @@ ggplot(LECT1) +
   ylab("Densité")
 ```
 
+### Pyramide des âges
+
+```{r}
+
+d <- titanic::titanic_train %>% 
+  mutate(Sexe = case_when(Sex == "male" ~ "Homme",
+                          Sex == "female" ~ "Femme")) 
+
+d %>% select(Sexe, Age) %>% drop_na() %>%
+  mutate(AGEq = cut(Age, include.lowest = TRUE,
+                    right = FALSE,  dig.lab = 1,
+                    breaks = c( 0,  5, 10, 15, 20, 25, 30, 35, 40, 
+                               45, 50, 55, 60, 65, 70, 75, 80, 85))) %>%
+  group_by(AGEq, Sexe) %>% count() %>% 
+  ungroup() %>%
+  mutate(freq = n / sum(n)*100) %>%
+  select(-n) %>%
+  pivot_wider(names_from = Sexe, values_from = freq) %>%
+  mutate(Homme = Homme*(-1)) %>%
+  select(AGEq, Homme, Femme) %>% pivot_longer(2:3,
+                                             names_to = "SEX",
+                                             values_to = "FREQ") %>%
+  filter(!is.na(AGEq)) |> 
+  ggplot() +
+    aes(x = AGEq, y = FREQ, fill = SEX) +
+    geom_col() +
+    coord_flip() +
+    labs(title = "Pyramide des âges des passagers du titanic",
+         x = "Age") + 
+    guides(fill = guide_legend(reverse = TRUE)) +
+    scale_y_continuous(breaks = c(-10, -5, 0, 5), 
+                       labels = c("10 %", "5 %", "0 %", "5 %")
+                        ) +
+    theme_bw() +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(),
+          axis.title.x = element_blank()
+            )
+```
+
+
+
 # **ANALYSE GEOMETRIQUE DES DONNEES**
 
 ![](images/Q7HIP.gif){width="613"}
