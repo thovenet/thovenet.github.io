@@ -29,7 +29,7 @@ opts_knit$set(width=75)
 
 [***A copier à chaque début de script !***]{.ul}
 
-```{r}
+```{r eval=TRUE}
 library(tidyverse)
 library(questionr)
 library(gtsummary)
@@ -88,7 +88,7 @@ DataExplorer : package interessant ! -> https://delladata.fr/analyses-exploratoi
 
 Avec notamment la possibilité de faire un graph des non réponses :
 
-```{r}
+```{r eval=TRUE}
 library(DataExplorer)
 t <- titanic::titanic_train
 plot_missing(t) 
@@ -96,9 +96,10 @@ plot_missing(t)
 
 `gtextra` permet aussi des choses trés sympas, notamment avec `gt_plt_summary()`
 
-```{r echo=TRUE}
+```{r eval = TRUE}
 library(gtExtras)
 gt_plt_summary(t) 
+
 ```
 
 
@@ -755,7 +756,7 @@ ggplot(LECT1) +
 
 ### Pyramide des âges
 
-```{r}
+```{r eval=TRUE}
 
 d <- titanic::titanic_train %>% 
   mutate(Sexe = case_when(Sex == "male" ~ "Homme",
