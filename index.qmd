@@ -1,0 +1,17 @@
+---
+title: "La boîte à tout"
+format: 
+  html:
+    theme: united
+editor: visual
+---
+
+# Boite à outils :
+
+-   [Boite à outils "historique"](https://thovenet.github.io/Boite-à-outils.html)
+
+-   [Fiche analyse textuelle](https://thovenet.github.io/Analyse-textuelle.html)
+
+-   [Fiche tableau des écarts bruts et nets](https://thovenet.github.io/tab-ec.html)
+
+-   [Fiche Pyramides des âges](https://thovenet.github.io/pyr.html)

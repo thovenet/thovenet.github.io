@@ -1,0 +1,181 @@
+---
+title: "Construire une pyramide des âges"
+subtitle: "version améliorable"
+format: 
+  html: 
+    toc: true
+    toc-location: left
+    toc-float: true
+    toc-title: "Navigation"
+    theme: "cosmo"
+    width: 100%
+    
+execute: 
+    warning: false
+    error: false
+editor: visual
+---
+
+```{r}
+#| label: Packages
+
+library(tidyverse)
+library(scales)
+
+```
+
+On utilise les données de la base `titatic`, dont on recode l'âge en classes quinquennales (optionnel)
+
+```{r}
+#| label: données
+d <- titanic::titanic_train |>
+  mutate(Age2 = cut(Age, include.lowest = TRUE, right = FALSE, dig.lab = 0,
+                    breaks = c( 0,  5, 10, 15, 20, 25, 
+                               30, 35, 40, 45, 50, 55, 
+                               60, 65, 70, 75, 80)),
+         Sexe = case_when(Sex == "male" ~ "Homme",
+                          Sex == "female" ~ "Femme")) |>
+  filter(!is.na(Age)) |> filter(!is.na(Sex))
+```
+
+# Pyramide 1 : sur la population entière
+
+```{r}
+#| label: "Pyramide 1"
+
+d |> 
+  select(Age2, Sexe) |>
+  group_by(Age2, Sexe) |> count() |> 
+  ungroup() |>
+  mutate(freq = n / sum(n)*100) |> 
+  select(-n) |>
+  pivot_wider(names_from = Sexe, values_from = freq) |>
+  mutate(Homme = Homme*(-1)) |>
+  select(Age2, Homme, Femme) |> pivot_longer(2:3,
+                                             names_to = "SEX",
+                                             values_to = "FREQ") |>
+  ggplot() +
+    aes(x = Age2, y = FREQ, fill = SEX) +
+    geom_col() +
+    coord_flip() +
+    labs(title = "Pyramide des âges des passagers du titanic")+
+    xlab("Age") + 
+    ylab("Frequence (%)") + 
+    guides(fill = guide_legend(reverse = TRUE))+
+    theme_bw() +
+    theme(legend.position = "none")+ 
+  annotate("text", x = 15, y = -6, label = "Homme")+ 
+  annotate("text", x = 15, y = 5, label = "Femme")
+
+```
+
+# Pyramides 2 : Comparaison de sous populations
+
+```{r}
+#| label: "Pyramides 2"
+#| layout-ncol: 2
+
+d |> 
+  select(Age2, Sexe, Survived) |>
+  filter(Survived == 0) |>
+  group_by(Age2, Sexe) |> count() |> 
+  ungroup() |>
+  mutate(freq = n / sum(n)*100) |> 
+  select(-n) |>
+  pivot_wider(names_from = Sexe, values_from = freq) |>
+  mutate(Homme = Homme*(-1)) |>
+  select(Age2, Homme, Femme) |> pivot_longer(2:3,
+                                             names_to = "SEX",
+                                             values_to = "FREQ") |>
+  ggplot() +
+    aes(x = Age2, y = FREQ, fill = SEX) +
+    geom_col() +
+    coord_flip() +
+    labs(title = "Pyramide des âges des décédés du titanic")+
+    xlab("Age") + 
+    ylab("Frequence (%)") + 
+    guides(fill = guide_legend(reverse = TRUE))+
+    theme_bw() +
+    theme(legend.position = "none")+ 
+  annotate("text", x = 15, y = -9, label = "Homme")+ 
+  annotate("text", x = 15, y = 2, label = "Femme")
+
+d |> 
+  select(Age2, Sexe, Survived) |>
+  filter(Survived == 1) |>
+  group_by(Age2, Sexe) |> count() |> 
+  ungroup() |>
+  mutate(freq = n / sum(n)*100) |> 
+  select(-n) |>
+  pivot_wider(names_from = Sexe, values_from = freq) |>
+  mutate(Homme = Homme*(-1)) |>
+  select(Age2, Homme, Femme) |> pivot_longer(2:3,
+                                             names_to = "SEX",
+                                             values_to = "FREQ") |>
+  ggplot() +
+    aes(x = Age2, y = FREQ, fill = SEX) +
+    geom_col() +
+    coord_flip() +
+    labs(title = "Pyramide des âges des survivants du titanic")+
+    xlab("Age") + 
+    ylab("Frequence (%)") + 
+    guides(fill = guide_legend(reverse = TRUE))+
+    theme_bw() +
+    theme(legend.position = "none")+ 
+  annotate("text", x = 14, y = -5, label = "Homme")+ 
+  annotate("text", x = 14, y = 5, label = "Femme")
+```
+
+# Pyramide 3 : Superposition de 2 pyramides
+
+```{r}
+#| label: Pyramide 3
+
+tab <- d |> 
+  select(Age2, Sexe, Survived) |>
+  group_by(Age2, Sexe, Survived) |> count() |> ungroup() |>
+  mutate(Survived = case_when(Survived == 0 ~ "Décédé",
+                              Survived == 1 ~ "Survivant")) |>
+  pivot_wider(names_from = Survived,
+              values_from = n) |>
+  mutate(Décédé = if_else(is.na(Décédé), 0, Décédé),
+         Survivant = if_else(is.na(Survivant), 0, Survivant),
+         F_Décédé = Décédé / sum(Décédé) * 100,
+         F_Survivant = Survivant / sum(Survivant) * 100) |>
+  select(Age2, Sexe, Décédé = F_Décédé, Survivant = F_Survivant) |>
+  pivot_longer(3:4, names_to = "Survie", values_to = "FREQ") |>
+  mutate(FREQ = case_when(Sexe == "Femme" ~ FREQ,
+                          Sexe == "Homme" ~ FREQ*(-1)),
+         Sexe = case_when(Sexe == "Femme" & Survie == "Survivant" ~ "Survivante",
+                          Sexe == "Homme" & Survie == "Survivant" ~ "Survivant",
+                          Sexe == "Femme" & Survie == "Décédé" ~ "Décédée",
+                          Sexe == "Homme" & Survie == "Décédé" ~ "Décédé"))
+  
+ggplot() +
+  geom_col(
+    data = tab |> filter(Survie == "Survivant"),
+    aes(x = Age2, y = FREQ, fill = Sexe)) +
+  geom_point(
+    data = tab |> filter(Survie == "Décédé"),
+    aes(x = Age2, y = FREQ, color = Sexe)) +
+  geom_segment(
+    data = tab |> filter(Survie == "Décédé"),
+    aes(x = Age2, xend = Age2,
+        y = 0, yend = FREQ, color = Sexe)) +
+  scale_fill_manual(values = c("#E69F00", "#56B4E9")) +
+  scale_colour_manual(values = c("#D55E00", "#0072B2")) +
+  coord_flip() +
+  labs(title = "Comparaison des structures de population des survivants et des décédés",
+       subtitle = "Populartion nationale Vs recourants à l'aide alimentaire")+
+    xlab("Age") + 
+    ylab("Frequence (%)") + 
+    guides(fill = guide_legend(reverse = TRUE))+
+    theme_bw() +
+    guides(fill = guide_legend(reverse = FALSE),
+           color = guide_legend(reverse = FALSE))+
+    theme(legend.position = "bottom",
+          legend.title = element_blank()) + 
+  annotate("text", x = 15, y = -8, label = "Homme")+ 
+  annotate("text", x = 15, y = 8, label = "Femme")
+
+```
